@@ -7,9 +7,9 @@ import {
   Marker
 } from "react-google-maps";
 
-import { GOOGLE_MAPS_API_KEY } from "../../config/config";
+import { GOOGLE_MAPS_API_KEY } from "../../../config/config";
 
-const GoogleMapWrap = compose(
+const GoogleMapsWrap = compose(
   withProps({
     googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}`,
     loadingElement: <div style={{ height: `100%` }} />,
@@ -23,4 +23,4 @@ const GoogleMapWrap = compose(
     <Marker position={{ lat, lng }} title="Hello World!" />
   </GoogleMap>
 ));
-export default GoogleMapWrap;
+export default GoogleMapsWrap;

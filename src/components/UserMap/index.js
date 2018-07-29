@@ -21,23 +21,24 @@ export default class UserMap extends React.Component {
       this.setState({ showLocation: false });
     }
   };
+  overlayMapDisplays = () => {
+    if (!navigator.geolocation) {
+      return <p>Geolocation not supported by your browser :(</p>;
+    } else if (!this.state.showLocation) {
+      return <p>Currently Not Showing Map!</p>;
+    } else {
+      return (
+        <GoogleMapsWrap lat={this.state.lat} lng={this.state.lng} zoom={15} />
+      );
+    }
+  };
 
   render() {
     return (
       <div>
         <LocatorToggle onLocatorClick={this.onLocatorClick} />
-        {this.state.showLocation ? (
-          <GoogleMapsWrap lat={this.state.lat} lng={this.state.lng} zoom={15} />
-        ) : (
-          <p>Currently Not Showing Map!</p>
-        )}
+        {this.overlayMapDisplays()}
       </div>
     );
   }
 }
-
-// if (!navigator.geolocation) {
-//   return <p>Geolocation not supported by your browser :(</p>;
-// }
-
-/* <GoogleMapsWrap lat={this.state.lat} lng={this.state.lng} zoom={15} />; */

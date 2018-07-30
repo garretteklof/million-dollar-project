@@ -4,6 +4,10 @@ import UserMap from "./UserMap/";
 
 export default class Home extends React.Component {
   render() {
-    return <UserMap />;
+    return (
+      <div className="container">
+        <UserMap />
+      </div>
+    );
   }
 }

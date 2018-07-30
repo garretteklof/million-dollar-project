@@ -1,12 +1,13 @@
 import React from "react";
+import Loader from "react-loaders";
 
 import GoogleMapsWrap from "./GoogleMapsWrap";
-import LocatorToggle from "./LocatorToggle";
 
 export default class UserMap extends React.Component {
-  state = { lat: 0, lng: 0, showLocation: false };
+  state = { lat: 0, lng: 0, showLocation: false, isLoading: false };
 
   getCurrentLocation = callback => {
+    this.setState({ isLoading: true });
     navigator.geolocation.getCurrentPosition(
       ({ coords }) =>
         this.setState(
@@ -19,7 +20,8 @@ export default class UserMap extends React.Component {
 
   toggleLocation = () =>
     this.setState({
-      showLocation: !this.state.showLocation
+      showLocation: !this.state.showLocation,
+      isLoading: false
     });
 
   onLocatorClick = () => {
@@ -31,8 +33,10 @@ export default class UserMap extends React.Component {
   overlayMapDisplays = () => {
     if (!navigator.geolocation) {
       return <p>Geolocation not supported by your browser :(</p>;
+    } else if (this.state.isLoading) {
+      return <Loader type="ball-rotate" style={{ transform: "scale(1.5)" }} />;
     } else if (!this.state.showLocation) {
-      return <p>Currently Not Showing Map!</p>;
+      return <p>Currently NOT showing map!</p>;
     } else {
       return <GoogleMapsWrap lat={this.state.lat} lng={this.state.lng} />;
     }
@@ -40,9 +44,11 @@ export default class UserMap extends React.Component {
 
   render() {
     return (
-      <div>
-        <LocatorToggle onLocatorClick={this.onLocatorClick} />
-        {this.overlayMapDisplays()}
+      <div className="user-map">
+        <a className="user-map__controls" onClick={this.onLocatorClick}>
+          Toggle Map
+        </a>
+        <div className="user-map__map">{this.overlayMapDisplays()}</div>
       </div>
     );
   }

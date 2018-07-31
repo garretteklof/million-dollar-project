@@ -2,6 +2,7 @@ import React from "react";
 import { Marker } from "react-google-maps";
 
 import GoogleMapsWrap from "./GoogleMapsWrap";
+import CustomMapControl from "./CustomMapControl";
 
 import { GOOGLE_MAPS_API_KEY } from "../../../config/config";
 
@@ -11,7 +12,7 @@ export default class UserMap extends React.Component {
     bounds: null,
     lat: 43.07466941883877,
     lng: -89.38419462801693,
-    showLocation: true
+    showLocation: false
   };
 
   componentDidMount() {}
@@ -98,10 +99,21 @@ export default class UserMap extends React.Component {
         onBoundsChanged={this.onBoundsChanged}
         onIdle={this.onIdle}
       >
+        {this.state.showLocation && (
+          <Marker key="ME!" position={{ lat, lng }} title={"IT ME, MARIO!"} />
+        )}
         {this.state.showLocation &&
           this.state.markers.map((marker, index) => (
             <Marker key={index} position={marker.position} />
           ))}
+        {window.google && (
+          <CustomMapControl
+            position={window.google.maps.ControlPosition.BOTTOM_CENTER}
+            toggle={this.handleToggleLocation}
+          >
+            <a className="user-map__controls">Toggle Map</a>
+          </CustomMapControl>
+        )}
       </GoogleMapsWrap>
     );
   }

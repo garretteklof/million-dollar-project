@@ -4,7 +4,7 @@ import { Marker } from "react-google-maps";
 import GoogleMapsWrap from "./GoogleMapsWrap";
 import CustomMapControl from "./CustomMapControl";
 
-import { GOOGLE_MAPS_API_KEY } from "../../../config/config";
+import { GOOGLE_MAPS_API_KEY } from "../../config/config";
 
 export default class UserMap extends React.Component {
   state = {

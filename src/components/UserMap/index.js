@@ -12,7 +12,8 @@ export default class UserMap extends React.Component {
     bounds: null,
     lat: 43.07466941883877,
     lng: -89.38419462801693,
-    showLocation: false
+    showLocation: false,
+    isLoading: false
   };
 
   componentDidMount() {}
@@ -54,6 +55,7 @@ export default class UserMap extends React.Component {
   };
 
   getCurrentLocation = callback => {
+    this.setState({ isLoading: true });
     navigator.geolocation.getCurrentPosition(
       ({ coords }) =>
         this.setState({ lat: coords.latitude, lng: coords.longitude }, () => {
@@ -75,7 +77,8 @@ export default class UserMap extends React.Component {
 
   toggleLocation = () =>
     this.setState({
-      showLocation: !this.state.showLocation
+      showLocation: !this.state.showLocation,
+      isLoading: false
     });
 
   handleToggleLocation = () => {
@@ -112,6 +115,14 @@ export default class UserMap extends React.Component {
             toggle={this.handleToggleLocation}
           >
             <a className="user-map__controls">Toggle Map</a>
+          </CustomMapControl>
+        )}
+        {this.state.isLoading && (
+          <CustomMapControl
+            position={window.google.maps.ControlPosition.CENTER}
+            toggle={() => console.log("I'm a fraud component!")}
+          >
+            <span style={{ fontSize: "8rem" }}>LOADING!</span>
           </CustomMapControl>
         )}
       </GoogleMapsWrap>

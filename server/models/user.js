@@ -44,8 +44,8 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods.toJSON = function() {
   const user = this;
-  const { _id, email } = user.toObject();
-  return { _id, email };
+  const { _id, email, locationCoordinates } = user.toObject();
+  return { _id, email, locationCoordinates };
 };
 
 UserSchema.methods.generateAuthToken = function() {
@@ -67,6 +67,11 @@ UserSchema.methods.removeAuthToken = function(token) {
       tokens: { token }
     }
   });
+};
+
+UserSchema.methods.updateLocation = function() {
+  const user = this;
+  return user.update({});
 };
 
 UserSchema.statics.findByToken = function(token) {

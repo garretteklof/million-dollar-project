@@ -39,6 +39,29 @@ app.get("/users/me", authenticate, (req, res) => {
   res.send(res.locals.user);
 });
 
+/***************************** LOCATION *****************************/
+
+app.post(
+  "/current-location",
+  express.json(),
+  authenticate,
+  async (req, res) => {
+    try {
+      const { lat, lng } = req.body;
+      const user = await User.findByIdAndUpdate(
+        res.locals.user._id,
+        {
+          $set: { locationCoordinates: { lat, lng } }
+        },
+        { new: true }
+      );
+      res.send(user);
+    } catch (e) {
+      res.status(400).send();
+    }
+  }
+);
+
 /***************************** AUTH *****************************/
 
 app.post("/login", express.json(), async (req, res) => {

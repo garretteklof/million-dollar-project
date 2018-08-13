@@ -1,5 +1,6 @@
 import React from "react";
 import { Marker } from "react-google-maps";
+import axios from "axios";
 
 import GoogleMapsWrap from "./GoogleMapsWrap";
 import CustomMapControl from "./CustomMapControl";
@@ -16,7 +17,37 @@ export default class UserMap extends React.Component {
     isLoading: false
   };
 
+  async componentWillMount() {
+    // TEST PURPOSES
+    try {
+      const response = await axios.post("/login", {
+        email: "test@test.com",
+        password: "abc123"
+      });
+      const token = response.headers["x-auth"];
+      localStorage.setItem("x-auth-token", token);
+    } catch (e) {
+      console.log(e);
+    }
+    // TEST PURPOSES
+  }
   componentDidMount() {}
+
+  async componentWillUnmount() {
+    // TEST PURPOSES
+    try {
+      const token = localStorage.getItem("x-auth-token");
+      await axios.delete("/logout", {
+        headers: {
+          "x-auth": token
+        }
+      });
+      localStorage.removeItem("x-auth-token");
+    } catch (e) {
+      console.log(e);
+    }
+    // TEST PURPOSES
+  }
 
   _MAP_REF_ = null;
 
@@ -58,19 +89,35 @@ export default class UserMap extends React.Component {
     this.setState({ isLoading: true });
     navigator.geolocation.getCurrentPosition(
       ({ coords }) =>
-        this.setState({ lat: coords.latitude, lng: coords.longitude }, () => {
-          const { lat, lng } = this.state;
-          typeof callback === "function" && callback();
-
-          /* NEED TO DO THIS BETTER LATER */
-          this._MAP_REF_.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setCenter(
-            {
-              lat,
-              lng
+        this.setState(
+          { lat: coords.latitude, lng: coords.longitude },
+          async () => {
+            const { lat, lng } = this.state;
+            typeof callback === "function" && callback();
+            try {
+              const token = localStorage.getItem("x-auth-token");
+              await axios.post(
+                "/current-location",
+                { lat, lng },
+                {
+                  headers: {
+                    "x-auth": token
+                  }
+                }
+              );
+            } catch (e) {
+              console.log(e);
             }
-          );
-          /* NEED TO DO THIS BETTER LATER */
-        }),
+            /* NEED TO DO THIS BETTER LATER */
+            this._MAP_REF_.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setCenter(
+              {
+                lat,
+                lng
+              }
+            );
+            /* NEED TO DO THIS BETTER LATER */
+          }
+        ),
       () => console.log("ERROR HANDLE HERE!")
     );
   };

@@ -2,6 +2,7 @@ require("./config/config");
 
 const path = require("path");
 const express = require("express");
+const { ObjectID } = require("mongodb");
 
 const { mongoose } = require("./db/mongoose");
 const { User } = require("./models/user");
@@ -14,7 +15,7 @@ const publicPath = path.join(__dirname, "..", "public");
 
 /***************************** USERS *****************************/
 
-app.get("/users", authenticate, async (req, res) => {
+app.get("/users", async (req, res) => {
   try {
     const users = await User.find({});
     res.send(users);
@@ -35,13 +36,29 @@ app.post("/users", express.json(), async (req, res) => {
   }
 });
 
+app.delete("/users/:id", authenticate, async (req, res) => {
+  const id = req.params.id;
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+  try {
+    const user = await User.findByIdAndRemove({ id });
+    if (!user) {
+      return res.status(404).send();
+    }
+    res.send(user);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
 app.get("/users/me", authenticate, (req, res) => {
   res.send(res.locals.user);
 });
 
 /***************************** LOCATION *****************************/
 
-app.post(
+app.patch(
   "/current-location",
   express.json(),
   authenticate,

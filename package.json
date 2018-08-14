@@ -7,7 +7,7 @@
     "node": "./node_modules/nodemon/bin/nodemon.js server/server.js",
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",
-    "dev-server": "webpack-dev-server",
+    "dev-server": "webpack-dev-server --host 0.0.0.0",
     "start": "node server/server.js",
     "heroku-postbuild": "yarn run build:prod"
   },

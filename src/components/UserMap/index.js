@@ -1,6 +1,13 @@
 import React from "react";
 import { Marker } from "react-google-maps";
-import axios from "axios";
+
+import {
+  loginTestUser,
+  logoutTestUser,
+  handleTestUserBeforeMount,
+  addRandomUser
+} from "./seed/users";
+import { callPatchLocation, callGetUsers } from "./seed/api";
 
 import GoogleMapsWrap from "./GoogleMapsWrap";
 import CustomMapControl from "./CustomMapControl";
@@ -17,36 +24,8 @@ export default class UserMap extends React.Component {
     isLoading: false
   };
 
-  async componentWillMount() {
-    // TEST PURPOSES
-    try {
-      const response = await axios.post("/login", {
-        email: "test@test.com",
-        password: "abc123"
-      });
-      const token = response.headers["x-auth"];
-      localStorage.setItem("x-auth-token", token);
-    } catch (e) {
-      console.log(e);
-    }
-    // TEST PURPOSES
-  }
-  componentDidMount() {}
-
-  async componentWillUnmount() {
-    // TEST PURPOSES
-    try {
-      const token = localStorage.getItem("x-auth-token");
-      await axios.delete("/logout", {
-        headers: {
-          "x-auth": token
-        }
-      });
-      localStorage.removeItem("x-auth-token");
-    } catch (e) {
-      console.log(e);
-    }
-    // TEST PURPOSES
+  componentWillMount() {
+    handleTestUserBeforeMount();
   }
 
   _MAP_REF_ = null;
@@ -60,54 +39,54 @@ export default class UserMap extends React.Component {
   onBoundsChanged = () => {
     if (this._MAP_REF_) {
       this.setState({
-        bounds: this._MAP_REF_.getBounds(),
-        markers: []
+        bounds: this._MAP_REF_.getBounds()
       });
     }
   };
 
-  onIdle = () => {
-    const { bounds, markers } = this.state;
-    if (bounds && !markers.length) {
+  seedUsers = async () => {
+    const { bounds, lat, lng } = this.state;
+    const { data } = await callGetUsers();
+    let newMarkerArray = [];
+    if (data.length < 11) {
+      await logoutTestUser();
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
       const lngSpan = northEast.lng() - southWest.lng();
       const latSpan = northEast.lat() - southWest.lat();
-      let newMarkerArray = [];
       for (let i = 0; i < 10; i++) {
         const position = new google.maps.LatLng(
           southWest.lat() + latSpan * Math.random(),
           southWest.lng() + lngSpan * Math.random()
         );
         newMarkerArray.push({ position });
+        addRandomUser(position);
       }
-      this.setState({ markers: newMarkerArray });
+      newMarkerArray.push({ position: new google.maps.LatLng(lat, lng) });
+      await loginTestUser("test@test.com", "abc123");
+    } else {
+      newMarkerArray = data.map(({ locationCoordinates }) => ({
+        position: new google.maps.LatLng(
+          locationCoordinates.lat,
+          locationCoordinates.lng
+        )
+      }));
     }
+    this.setState({ markers: newMarkerArray });
   };
 
-  getCurrentLocation = callback => {
+  getCurrentLocation = async callback => {
     this.setState({ isLoading: true });
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) =>
-        this.setState(
-          { lat: coords.latitude, lng: coords.longitude },
-          async () => {
-            const { lat, lng } = this.state;
-            typeof callback === "function" && callback();
-            try {
-              const token = localStorage.getItem("x-auth-token");
-              await axios.post(
-                "/current-location",
-                { lat, lng },
-                {
-                  headers: {
-                    "x-auth": token
-                  }
-                }
-              );
-            } catch (e) {
-              console.log(e);
-            }
+    const token = localStorage.getItem("x-auth-token");
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        async ({ coords }) => {
+          const lat = coords.latitude;
+          const lng = coords.longitude;
+          try {
+            await callPatchLocation({ lat, lng }, token);
+          } catch (e) {}
+          this.setState({ lat, lng }, () => {
             /* NEED TO DO THIS BETTER LATER */
             this._MAP_REF_.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setCenter(
               {
@@ -115,11 +94,18 @@ export default class UserMap extends React.Component {
                 lng
               }
             );
+            this.setState({
+              bounds: this._MAP_REF_.getBounds()
+            });
             /* NEED TO DO THIS BETTER LATER */
-          }
-        ),
-      () => console.log("ERROR HANDLE HERE!")
-    );
+            typeof callback === "function" && callback();
+          });
+          return resolve();
+        },
+        () => reject(Error("ERROR HANDLE HERE!")),
+        { enableHighAccuracy: true }
+      );
+    });
   };
 
   toggleLocation = () =>
@@ -128,11 +114,16 @@ export default class UserMap extends React.Component {
       isLoading: false
     });
 
-  handleToggleLocation = () => {
+  onToggleButtonClick = async () => {
     if (this.state.showLocation) {
       return this.toggleLocation();
     }
-    this.getCurrentLocation(this.toggleLocation);
+    try {
+      await this.getCurrentLocation(this.toggleLocation);
+      this.seedUsers();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   render() {
@@ -147,23 +138,24 @@ export default class UserMap extends React.Component {
         defaultCenter={{ lat, lng }}
         onMapMounted={this.onMapMounted}
         onBoundsChanged={this.onBoundsChanged}
-        onIdle={this.onIdle}
       >
-        {this.state.showLocation && (
+        {/* {this.state.showLocation && (
           <Marker key="ME!" position={{ lat, lng }} title={"IT ME, MARIO!"} />
-        )}
+        )} */}
+
         {this.state.showLocation &&
           this.state.markers.map((marker, index) => (
             <Marker key={index} position={marker.position} />
           ))}
-        {window.google && (
-          <CustomMapControl
-            position={window.google.maps.ControlPosition.BOTTOM_CENTER}
-            toggle={this.handleToggleLocation}
-          >
-            <a className="user-map__controls">Toggle Map</a>
-          </CustomMapControl>
-        )}
+        {window.google &&
+          !this.state.isLoading && (
+            <CustomMapControl
+              position={window.google.maps.ControlPosition.BOTTOM_CENTER}
+              toggle={this.onToggleButtonClick}
+            >
+              <a className="user-map__controls">Toggle Map</a>
+            </CustomMapControl>
+          )}
         {this.state.isLoading && (
           <CustomMapControl
             position={window.google.maps.ControlPosition.CENTER}

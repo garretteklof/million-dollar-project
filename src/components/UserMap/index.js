@@ -1,5 +1,6 @@
 import React from "react";
 import { Marker } from "react-google-maps";
+import styled from "styled-components";
 
 import {
   loginTestUser,
@@ -13,6 +14,12 @@ import GoogleMapsWrap from "./GoogleMapsWrap";
 import CustomMapControl from "./CustomMapControl";
 
 import { GOOGLE_MAPS_API_KEY } from "../../config/config";
+
+const ToggleMap = styled.a`
+  cursor: pointer;
+  color: blue;
+  font-size: 3rem;
+`;
 
 export default class UserMap extends React.Component {
   state = {
@@ -153,7 +160,7 @@ export default class UserMap extends React.Component {
               position={window.google.maps.ControlPosition.BOTTOM_CENTER}
               toggle={this.onToggleButtonClick}
             >
-              <a className="user-map__controls">Toggle Map</a>
+              <ToggleMap>Toggle Map</ToggleMap>
             </CustomMapControl>
           )}
         {this.state.isLoading && (

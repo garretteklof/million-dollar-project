@@ -1,8 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -14,26 +12,7 @@ module.exports = {
   module: {
     rules: [
       { loader: "babel-loader", test: /\.js$/, exclude: /node_modules/ },
-      { loader: "svg-url-loader", test: /\.svg/ },
-      {
-        test: /\.s?css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: { sourceMap: true, importLoaders: 1 }
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              ident: "postcss",
-              plugins: loader => [require("autoprefixer")()],
-              sourceMap: true
-            }
-          },
-          { loader: "sass-loader", options: { sourceMap: true } }
-        ]
-      }
+      { loader: "svg-url-loader", test: /\.svg/ }
     ]
   },
   optimization: {
@@ -42,11 +21,9 @@ module.exports = {
         cache: true,
         parallel: true,
         sourceMap: true
-      }),
-      new OptimizeCSSAssetsPlugin({})
+      })
     ]
   },
-  plugins: [new MiniCssExtractPlugin({ filename: "styles.css" })],
   devtool:
     process.env.NODE_ENV === "production" ? "source-map" : "inline-source-map",
   devServer: {

@@ -13,7 +13,21 @@ const app = (
   </Provider>
 );
 
-ReactDOM.render(<App />, document.getElementById("app"));
+let hasRendered = false;
+const renderApp = () => {
+  if (!hasRendered) {
+    ReactDOM.render(app, document.getElementById("app"));
+    hasRendered = true;
+  }
+};
+
+(async () => {
+  try {
+    renderApp();
+  } catch (e) {
+    renderApp();
+  }
+})();
 
 injectGlobal`
   *,

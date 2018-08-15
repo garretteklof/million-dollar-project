@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Marker } from "react-google-maps";
 import styled from "styled-components";
 
@@ -7,7 +8,10 @@ import CustomMapControl from "./Google/CustomMapControl";
 
 import { GOOGLE_MAPS_API_KEY } from "../../config";
 
-import { callPatchLocation, callGetUsers } from "../../api/";
+import { asyncSetUsers } from "../../actions/users";
+import { callGetUsers } from "../../api/users";
+import { callPatchLocation } from "../../api/location";
+
 import {
   loginTestUser,
   logoutTestUser,
@@ -15,7 +19,13 @@ import {
   addRandomUser
 } from "./__seed/users";
 
-export default class UserMap extends React.Component {
+const ToggleMap = styled.a`
+  cursor: pointer;
+  color: blue;
+  font-size: 3rem;
+`;
+
+class UserMap extends React.Component {
   state = {
     markers: [],
     bounds: null,
@@ -121,7 +131,8 @@ export default class UserMap extends React.Component {
     }
     try {
       await this.getCurrentLocation(this.toggleLocation);
-      this.seedUsers();
+      await this.seedUsers();
+      this.props.asyncSetUsers();
     } catch (e) {
       console.log(e);
     }
@@ -170,8 +181,15 @@ export default class UserMap extends React.Component {
   }
 }
 
-const ToggleMap = styled.a`
-  cursor: pointer;
-  color: blue;
-  font-size: 3rem;
-`;
+const mapStateToProps = ({ users }) => ({
+  users
+});
+
+const mapDispatchToProps = dispatch => ({
+  asyncSetUsers: () => dispatch(asyncSetUsers())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserMap);

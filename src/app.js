@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import AppRouter from "./routers/AppRouter";
+import App from "./routers/App";
 import configureStore from "./store/configureStore";
 import { injectGlobal } from "styled-components";
 
@@ -9,11 +9,11 @@ const store = configureStore();
 
 const app = (
   <Provider store={store}>
-    <AppRouter />
+    <App />
   </Provider>
 );
 
-ReactDOM.render(<AppRouter />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById("app"));
 
 injectGlobal`
   *,

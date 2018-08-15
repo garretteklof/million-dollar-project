@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Home from "../components/Home";
 
-const AppRouter = () => (
+const App = () => (
   <Router>
     <Switch>
       <Route path="/" component={Home} exact={true} />
@@ -11,4 +11,4 @@ const AppRouter = () => (
   </Router>
 );
 
-export default AppRouter;
+export default App;

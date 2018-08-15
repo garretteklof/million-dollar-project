@@ -2,24 +2,18 @@ import React from "react";
 import { Marker } from "react-google-maps";
 import styled from "styled-components";
 
+import GoogleMapsWrap from "./Google/GoogleMapsWrap";
+import CustomMapControl from "./Google/CustomMapControl";
+
+import { GOOGLE_MAPS_API_KEY } from "../../config";
+
+import { callPatchLocation, callGetUsers } from "../../api/";
 import {
   loginTestUser,
   logoutTestUser,
   handleTestUserBeforeMount,
   addRandomUser
-} from "./seed/users";
-import { callPatchLocation, callGetUsers } from "./seed/api";
-
-import GoogleMapsWrap from "./GoogleMapsWrap";
-import CustomMapControl from "./CustomMapControl";
-
-import { GOOGLE_MAPS_API_KEY } from "../../config/config";
-
-const ToggleMap = styled.a`
-  cursor: pointer;
-  color: blue;
-  font-size: 3rem;
-`;
+} from "./__seed/users";
 
 export default class UserMap extends React.Component {
   state = {
@@ -31,11 +25,11 @@ export default class UserMap extends React.Component {
     isLoading: false
   };
 
+  _MAP_REF_ = null;
+
   componentWillMount() {
     handleTestUserBeforeMount();
   }
-
-  _MAP_REF_ = null;
 
   onMapMounted = ref => {
     if (ref && !this._MAP_REF_) {
@@ -141,7 +135,7 @@ export default class UserMap extends React.Component {
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `100%`, width: `100%` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-        defaultZoom={15}
+        defaultZoom={12}
         defaultCenter={{ lat, lng }}
         onMapMounted={this.onMapMounted}
         onBoundsChanged={this.onBoundsChanged}
@@ -175,3 +169,9 @@ export default class UserMap extends React.Component {
     );
   }
 }
+
+const ToggleMap = styled.a`
+  cursor: pointer;
+  color: blue;
+  font-size: 3rem;
+`;

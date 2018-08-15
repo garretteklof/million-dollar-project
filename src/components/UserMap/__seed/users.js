@@ -4,7 +4,7 @@ import {
   callPostUsers,
   callPatchLocation,
   callGetUsers
-} from "./api";
+} from "../../../api/";
 
 const checkIfTestUserExists = async email => {
   const { data } = await callGetUsers();

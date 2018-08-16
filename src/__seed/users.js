@@ -1,6 +1,6 @@
-import { callLogin, callLogout } from "../../../api/auth";
-import { callPostUsers, callGetUsers } from "../../../api/users";
-import { callPatchLocation } from "../../../api/location";
+import { callLogin, callLogout } from "../api/auth";
+import { callPostUsers, callGetUsers } from "../api/users";
+import { callPatchLocation } from "../api/location";
 
 const checkIfTestUserExists = async email => {
   const { data } = await callGetUsers();

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import UserMap from "./UserMap/";
-import UserList from "./UserList/";
+import GoogleMap from "../../independent/GoogleMap/";
+import Rolodex from "../../independent/Rolodex";
 
 const Container = styled.div`
   padding: 2rem;
@@ -15,8 +15,8 @@ export default class Home extends React.Component {
   render() {
     return (
       <Container>
-        <UserMap />
-        <UserList />
+        <GoogleMap />
+        <Rolodex />
       </Container>
     );
   }

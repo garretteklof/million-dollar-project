@@ -2,7 +2,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { MAP } from "react-google-maps/lib/constants";
 import PropTypes from "prop-types";
-export default class CustomMapControl extends React.Component {
+export default class CustomControl extends React.Component {
   static contextTypes = { [MAP]: PropTypes.object };
   componentWillMount() {
     this.map = this.context[MAP];

@@ -2,7 +2,7 @@ import { callGetUsers, callPostUsers } from "../api/users";
 
 /************************************************ ASYNC ************************************************/
 
-export const asyncSetUsers = () => async dispatch => {
+export const __$setUsers = () => async dispatch => {
   try {
     const { data } = await callGetUsers();
     dispatch(setUsers(data));

@@ -8,7 +8,9 @@ import Button from "../../shared/Button/";
 
 import { GOOGLE_MAPS_API_KEY } from "../../../config";
 
-import { asyncSetUsers } from "../../../actions/users";
+import { __$setUsers } from "../../../actions/users";
+import { setBounds } from "../../../actions/map";
+
 import { callGetUsers } from "../../../api/users";
 import { callPatchLocation } from "../../../api/location";
 
@@ -37,7 +39,7 @@ class GoogleMap extends React.Component {
         try {
           await this.getCurrentLocation();
           await this.seedRandomUsers();
-          this.props.asyncSetUsers();
+          this.props.__$setUsers();
         } catch (e) {
           console.log(e);
           this.setState({
@@ -59,9 +61,15 @@ class GoogleMap extends React.Component {
 
   onBoundsChanged = () => {
     if (this._MAP_REF_) {
-      this.setState({
-        bounds: this._MAP_REF_.getBounds()
-      });
+      this.setState(
+        {
+          bounds: this._MAP_REF_.getBounds()
+        },
+        () => {
+          this.props.setBounds({ bounds: this.state.bounds });
+          this.updateMarkers();
+        }
+      );
     }
   };
 
@@ -106,19 +114,14 @@ class GoogleMap extends React.Component {
     }
   };
 
-  fetchUsersInSurroundingArea = async () => {
-    const { data } = await callGetUsers();
+  seedRandomUsers = async () => {
     const { bounds } = this.state;
-    return data
+    const { data } = await callGetUsers();
+    const users = data
       .filter(({ locationCoordinates }) =>
         bounds.contains(new google.maps.LatLng(locationCoordinates))
       )
       .filter(({ email }) => email !== "test@test.com");
-  };
-
-  seedRandomUsers = async () => {
-    const { bounds } = this.state;
-    const users = await this.fetchUsersInSurroundingArea();
     let markers = [];
     if (users.length < 10) {
       await logoutTestUser();
@@ -131,7 +134,9 @@ class GoogleMap extends React.Component {
           southWest.lat() + latSpan * Math.random(),
           southWest.lng() + lngSpan * Math.random()
         );
-        markers.push({ position });
+        markers.push({
+          position
+        });
         addRandomUser(position);
       }
       await loginTestUser("test@test.com", "abc123");
@@ -148,6 +153,23 @@ class GoogleMap extends React.Component {
 
   onGhostToggleClick = () =>
     this.setState({ showLocation: !this.state.showLocation });
+
+  updateMarkers = async () => {
+    const { data } = await callGetUsers();
+    const users = data
+      .filter(({ locationCoordinates }) =>
+        this.state.bounds.contains(new google.maps.LatLng(locationCoordinates))
+      )
+      .filter(({ email }) => email !== "test@test.com");
+
+    const markers = users.map(({ locationCoordinates }) => ({
+      position: new google.maps.LatLng(
+        locationCoordinates.lat,
+        locationCoordinates.lng
+      )
+    }));
+    this.setState({ markers });
+  };
 
   render() {
     const { lat, lng } = this.state;
@@ -191,15 +213,12 @@ class GoogleMap extends React.Component {
   }
 }
 
-const mapStateToProps = ({ users }) => ({
-  users
-});
-
 const mapDispatchToProps = dispatch => ({
-  asyncSetUsers: () => dispatch(asyncSetUsers())
+  setBounds: bounds => dispatch(setBounds(bounds)),
+  __$setUsers: () => dispatch(__$setUsers())
 });
 
 export default connect(
-  mapStateToProps,
+  undefined,
   mapDispatchToProps
 )(GoogleMap);

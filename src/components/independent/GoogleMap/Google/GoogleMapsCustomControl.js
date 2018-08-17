@@ -7,11 +7,15 @@ export default class CustomControl extends React.Component {
   componentWillMount() {
     this.map = this.context[MAP];
     this.controlDiv = document.createElement("div");
-    this.controlDiv.addEventListener("click", this.props.toggle);
+    if (this.props.toggle) {
+      this.controlDiv.addEventListener("click", this.props.toggle);
+    }
     this.map.controls[this.props.position].push(this.controlDiv);
   }
   componentWillUnmount() {
-    this.controlDiv.removeEventListener("click", this.props.toggle);
+    if (this.props.toggle) {
+      this.controlDiv.removeEventListener("click", this.props.toggle);
+    }
   }
   render() {
     return createPortal(this.props.children, this.controlDiv);

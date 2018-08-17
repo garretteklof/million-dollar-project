@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Marker } from "react-google-maps";
 
-import GoogleMapsWrap from "./GoogleMapsWrap";
-import CustomControl from "./CustomControl";
-import Button from "../../shared/Button/";
+import GoogleMapsWrap from "./Google/GoogleMapsWrap";
+import googleprops from "./Google/google-maps-wrap-props";
 
-import { GOOGLE_MAPS_API_KEY } from "../../../config";
+import Loader from "./Loader";
+import MapMarker from "./MapMarker";
+import GhostToggle from "./GhostToggle";
 
 import { __$setUsers } from "../../../actions/users";
 import { setBounds } from "../../../actions/map";
@@ -15,10 +15,8 @@ import { callGetUsers } from "../../../api/users";
 import { callPatchLocation } from "../../../api/location";
 
 import {
-  loginTestUser,
-  logoutTestUser,
   handleTestUserBeforeMount,
-  addRandomUser
+  seedRandomUsers
 } from "../../../__seed/users";
 
 class GoogleMap extends React.Component {
@@ -34,14 +32,20 @@ class GoogleMap extends React.Component {
 
   componentDidMount() {
     handleTestUserBeforeMount();
+    // small mount delay w/ react-google-maps
+    // can't access map ref on mount
+    // ∴ need ~small setTimeout
     setTimeout(async () => {
       if (this._MAP_REF_) {
         try {
           await this.getCurrentLocation();
-          await this.seedRandomUsers();
+          await seedRandomUsers(this.state.bounds, markers =>
+            this.setState({ markers })
+          );
           this.props.__$setUsers();
         } catch (e) {
           console.log(e);
+          this.props.__$setUsers();
           this.setState({
             isLoading: false,
             geolocationDenied: true
@@ -66,8 +70,8 @@ class GoogleMap extends React.Component {
           bounds: this._MAP_REF_.getBounds()
         },
         () => {
-          this.props.setBounds({ bounds: this.state.bounds });
           this.updateMarkers();
+          this.props.setBounds({ bounds: this.state.bounds });
         }
       );
     }
@@ -107,53 +111,6 @@ class GoogleMap extends React.Component {
     });
   };
 
-  placeUserMarker = () => {
-    const { lat, lng } = this.state;
-    if (this.state.showLocation) {
-      return <Marker key="ME!" position={{ lat, lng }} title={"IT ME!"} />;
-    }
-  };
-
-  seedRandomUsers = async () => {
-    const { bounds } = this.state;
-    const { data } = await callGetUsers();
-    const users = data
-      .filter(({ locationCoordinates }) =>
-        bounds.contains(new google.maps.LatLng(locationCoordinates))
-      )
-      .filter(({ email }) => email !== "test@test.com");
-    let markers = [];
-    if (users.length < 10) {
-      await logoutTestUser();
-      for (let i = 0; i < 10; i++) {
-        const southWest = bounds.getSouthWest();
-        const northEast = bounds.getNorthEast();
-        const lngSpan = northEast.lng() - southWest.lng();
-        const latSpan = northEast.lat() - southWest.lat();
-        const position = new google.maps.LatLng(
-          southWest.lat() + latSpan * Math.random(),
-          southWest.lng() + lngSpan * Math.random()
-        );
-        markers.push({
-          position
-        });
-        addRandomUser(position);
-      }
-      await loginTestUser("test@test.com", "abc123");
-    } else {
-      markers = users.map(({ locationCoordinates }) => ({
-        position: new google.maps.LatLng(
-          locationCoordinates.lat,
-          locationCoordinates.lng
-        )
-      }));
-    }
-    this.setState({ markers });
-  };
-
-  onGhostToggleClick = () =>
-    this.setState({ showLocation: !this.state.showLocation });
-
   updateMarkers = async () => {
     const { data } = await callGetUsers();
     const users = data
@@ -171,43 +128,49 @@ class GoogleMap extends React.Component {
     this.setState({ markers });
   };
 
+  placeMarkersOnMap = () => {
+    const { markers, lat, lng } = this.state;
+    const userMarker = (
+      <MapMarker key="ME!" position={{ lat, lng }} title={"IT ME!"} />
+    );
+    let allMarkers = markers.map((marker, index) => (
+      <MapMarker key={index} position={marker.position} />
+    ));
+    if (this.state.showLocation) {
+      allMarkers.push(userMarker);
+    }
+    return allMarkers;
+  };
+
+  placeControlsOnMap = () => {
+    const { isLoading, geolocationDenied } = this.state;
+    if (window.google && !isLoading && !geolocationDenied) {
+      return (
+        <GhostToggle
+          position={window.google.maps.ControlPosition.BOTTOM_CENTER}
+          toggle={this.onGhostToggle}
+          children={"Ghost Toggle"}
+        />
+      );
+    }
+  };
+
+  onGhostToggle = () =>
+    this.setState({ showLocation: !this.state.showLocation });
+
   render() {
-    const { lat, lng } = this.state;
+    const { lat, lng, isLoading } = this.state;
     return (
       <GoogleMapsWrap
-        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}`}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%`, width: `100%` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
+        {...googleprops}
         defaultZoom={12}
         defaultCenter={{ lat, lng }}
         onMapMounted={this.onMapMounted}
         onBoundsChanged={this.onBoundsChanged}
       >
-        {this.state.markers.map((marker, index) => (
-          <Marker key={index} position={marker.position} />
-        ))}
-
-        {this.placeUserMarker()}
-
-        {window.google &&
-          !this.state.isLoading &&
-          !this.state.geolocationDenied && (
-            <CustomControl
-              position={window.google.maps.ControlPosition.BOTTOM_CENTER}
-              toggle={this.onGhostToggleClick}
-            >
-              <Button>Ghost Mode</Button>
-            </CustomControl>
-          )}
-        {this.state.isLoading && (
-          <CustomControl
-            position={window.google.maps.ControlPosition.CENTER}
-            toggle={() => console.log("I'm a fraud component!")}
-          >
-            <span style={{ fontSize: "8rem" }}>LOADING!</span>
-          </CustomControl>
-        )}
+        {isLoading && <Loader>LOADING!</Loader>}
+        {this.placeMarkersOnMap()}
+        {this.placeControlsOnMap()}
       </GoogleMapsWrap>
     );
   }

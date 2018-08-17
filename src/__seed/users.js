@@ -2,6 +2,45 @@ import { callLogin, callLogout } from "../api/auth";
 import { callPostUsers, callGetUsers } from "../api/users";
 import { callPatchLocation } from "../api/location";
 
+export const handleTestUserBeforeMount = async () => {
+  const email = "test@test.com";
+  const password = "abc123";
+  const testUserExists = await checkIfTestUserExists(email);
+  if (testUserExists) {
+    await logoutTestUser();
+    await loginTestUser(email, password);
+  } else {
+    createNewTestUser(email, password);
+  }
+};
+
+export const seedRandomUsers = async (bounds, callback) => {
+  const { data } = await callGetUsers();
+  const users = data
+    .filter(({ locationCoordinates }) =>
+      bounds.contains(new google.maps.LatLng(locationCoordinates))
+    )
+    .filter(({ email }) => email !== "test@test.com");
+  let markers = [];
+  if (users.length < 10) {
+    await logoutTestUser();
+    for (let i = 0; i < 10; i++) {
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+      const lngSpan = northEast.lng() - southWest.lng();
+      const latSpan = northEast.lat() - southWest.lat();
+      const position = new google.maps.LatLng(
+        southWest.lat() + latSpan * Math.random(),
+        southWest.lng() + lngSpan * Math.random()
+      );
+      markers.push({ position });
+      addRandomUser(position);
+    }
+    await loginTestUser("test@test.com", "abc123");
+    callback(markers);
+  }
+};
+
 const checkIfTestUserExists = async email => {
   const { data } = await callGetUsers();
   if (data.length) {
@@ -19,7 +58,7 @@ const createNewTestUser = async (email, password) => {
   }
 };
 
-export const loginTestUser = async (email, password) => {
+const loginTestUser = async (email, password) => {
   try {
     const response = await callLogin(email, password);
     const token = response.headers["x-auth"];
@@ -29,7 +68,7 @@ export const loginTestUser = async (email, password) => {
   }
 };
 
-export const logoutTestUser = async () => {
+const logoutTestUser = async () => {
   try {
     const token = localStorage.getItem("x-auth-token");
     await callLogout(token);
@@ -38,19 +77,7 @@ export const logoutTestUser = async () => {
   }
 };
 
-export const handleTestUserBeforeMount = async () => {
-  const email = "test@test.com";
-  const password = "abc123";
-  const testUserExists = await checkIfTestUserExists(email);
-  if (testUserExists) {
-    await logoutTestUser();
-    await loginTestUser(email, password);
-  } else {
-    createNewTestUser(email, password);
-  }
-};
-
-export const addRandomUser = async location => {
+const addRandomUser = async location => {
   try {
     const email = `${Math.random()
       .toString(36)

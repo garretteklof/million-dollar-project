@@ -13,7 +13,7 @@ export const handleTestUserBeforeMount = async () => {
     await logoutTestUser();
     await loginTestUser(email, password);
   } else {
-    await createNewTestUser({ email, password, firstName, lastName });
+    createNewTestUser({ email, password, firstName, lastName });
   }
 };
 
@@ -39,7 +39,7 @@ export const seedRandomUsers = async (bounds, callback) => {
         southWest.lng() + lngSpan * Math.random()
       );
       markers.push({ position });
-      await addRandomUser(position);
+      addRandomUser(position);
     }
     await loginTestUser("test@test.com", "abc123");
     callback(markers);
@@ -84,7 +84,7 @@ const logoutTestUser = async () => {
 
 const addRandomUser = async location => {
   try {
-    const email = faker.internet.email();
+    const email = faker.internet.exampleEmail();
     const password = faker.internet.password();
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();

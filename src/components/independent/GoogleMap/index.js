@@ -30,8 +30,8 @@ class GoogleMap extends React.Component {
     geolocationDenied: false
   };
 
-  async componentDidMount() {
-    await handleTestUserBeforeMount();
+  componentDidMount() {
+    handleTestUserBeforeMount();
     // small mount delay w/ react-google-maps
     // can't access map ref on mount
     // ∴ need ~small setTimeout

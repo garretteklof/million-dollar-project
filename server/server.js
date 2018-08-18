@@ -63,7 +63,7 @@ app.patch("/location", express.json(), authenticate, async (req, res) => {
     const { lat, lng, isSharing = true } = req.body;
     const { location } = await User.findByIdAndUpdate(
       res.locals.user._id,
-      { $set: { location: { coordinates: { lat, lng }, isSharing } } },
+      { $set: { location: { geo: { lat, lng }, isSharing } } },
       { new: true }
     );
     res.send(location);

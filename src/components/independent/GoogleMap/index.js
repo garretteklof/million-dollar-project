@@ -117,13 +117,13 @@ class GoogleMap extends React.Component {
     const users = data
       .filter(({ location }) => {
         if (location) {
-          return bounds.contains(new google.maps.LatLng(location.coordinates));
+          return bounds.contains(new google.maps.LatLng(location.geo));
         }
       })
       .filter(({ email }) => email !== "test@test.com");
 
     const markers = users.map(({ location }) => ({
-      position: new google.maps.LatLng(location.coordinates)
+      position: new google.maps.LatLng(location.geo)
     }));
     this.setState({ markers });
   };

@@ -22,7 +22,7 @@ export const seedRandomUsers = async (bounds, callback) => {
   const users = data
     .filter(({ location }) => {
       if (location) {
-        return bounds.contains(new google.maps.LatLng(location.coordinates));
+        return bounds.contains(new google.maps.LatLng(location.geo));
       }
     })
     .filter(({ email }) => email !== "test@test.com");

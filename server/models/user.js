@@ -4,6 +4,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     required: true,
@@ -19,6 +27,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 6
+  },
+  forte: {
+    type: String,
+    enum: ["Visionary", "Engineer", "Artist", "TBD"]
   },
   location: {
     isSharing: {
@@ -50,8 +62,8 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods.toJSON = function() {
   const user = this;
-  const { _id, email, location } = user.toObject();
-  return { _id, email, location };
+  const { _id, firstName, lastName, email, location } = user.toObject();
+  return { _id, firstName, lastName, email, location };
 };
 
 UserSchema.methods.generateAuthToken = function() {

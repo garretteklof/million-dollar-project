@@ -2,10 +2,9 @@ import axios from "axios";
 
 export const callGetUsers = () => axios.get("/users");
 
-export const callPostUsers = (email, password) =>
+export const callPostUsers = user =>
   axios.post("/users", {
-    email,
-    password
+    ...user
   });
 
 export const callGetMe = token =>

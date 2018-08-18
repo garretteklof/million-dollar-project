@@ -1,4 +1,4 @@
-import { callGetUsers, callPostUsers } from "../api/users";
+import { callGetUsers } from "../api/users";
 
 /************************************************ ASYNC ************************************************/
 

@@ -1,16 +1,19 @@
 import { callLogin, callLogout } from "../api/auth";
 import { callPostUsers, callGetUsers } from "../api/users";
 import { callPatchLocation } from "../api/location";
+import { names } from "./random-names";
 
 export const handleTestUserBeforeMount = async () => {
   const email = "test@test.com";
   const password = "abc123";
+  const firstName = "Slim";
+  const lastName = "Jesus";
   const testUserExists = await checkIfTestUserExists(email);
   if (testUserExists) {
     await logoutTestUser();
     await loginTestUser(email, password);
   } else {
-    createNewTestUser(email, password);
+    createNewTestUser({ email, password, firstName, lastName });
   }
 };
 
@@ -50,9 +53,9 @@ const checkIfTestUserExists = async email => {
   }
 };
 
-const createNewTestUser = async (email, password) => {
+const createNewTestUser = async user => {
   try {
-    const response = await callPostUsers(email, password);
+    const response = await callPostUsers(user);
     const token = response.headers["x-auth"];
     localStorage.setItem("x-auth-token", token);
   } catch (e) {
@@ -84,7 +87,15 @@ const addRandomUser = async location => {
     const email = `${Math.random()
       .toString(36)
       .slice(-10)}@this-is-a-fake-email.com`;
-    const response = await callPostUsers(email, "abc123");
+    const password = "abc123";
+    const firstName = names[Math.floor(Math.random() * names.length)];
+    const lastName = names[Math.floor(Math.random() * names.length)];
+    const response = await callPostUsers({
+      firstName,
+      lastName,
+      email,
+      password
+    });
     const token = response.headers["x-auth"];
     localStorage.setItem("x-auth-token", token);
     await callPatchLocation(location, token);

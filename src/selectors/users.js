@@ -1,7 +1,9 @@
 export const fetchUsersInSurroundingArea = (users, bounds) => {
   return users
-    .filter(({ locationCoordinates }) =>
-      bounds.contains(new google.maps.LatLng(locationCoordinates))
-    )
+    .filter(({ location }) => {
+      if (location) {
+        return bounds.contains(new google.maps.LatLng(location.coordinates));
+      }
+    })
     .filter(({ email }) => email !== "test@test.com");
 };

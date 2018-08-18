@@ -20,12 +20,18 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
-  locationCoordinates: {
-    lat: {
-      type: Number
+  location: {
+    isSharing: {
+      type: Boolean,
+      default: true
     },
-    lng: {
-      type: Number
+    coordinates: {
+      lat: {
+        type: Number
+      },
+      lng: {
+        type: Number
+      }
     }
   },
   tokens: [
@@ -44,8 +50,8 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods.toJSON = function() {
   const user = this;
-  const { _id, email, locationCoordinates } = user.toObject();
-  return { _id, email, locationCoordinates };
+  const { _id, email, location } = user.toObject();
+  return { _id, email, location };
 };
 
 UserSchema.methods.generateAuthToken = function() {
@@ -67,11 +73,6 @@ UserSchema.methods.removeAuthToken = function(token) {
       tokens: { token }
     }
   });
-};
-
-UserSchema.methods.updateLocation = function() {
-  const user = this;
-  return user.update({});
 };
 
 UserSchema.statics.findByToken = function(token) {
@@ -120,6 +121,7 @@ UserSchema.pre("save", function(next) {
     next();
   }
 });
+
 const User = mongoose.model("User", UserSchema);
 
 module.exports = { User };

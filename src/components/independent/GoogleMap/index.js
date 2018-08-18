@@ -113,17 +113,17 @@ class GoogleMap extends React.Component {
 
   updateMarkers = async () => {
     const { data } = await callGetUsers();
+    const { bounds } = this.state;
     const users = data
-      .filter(({ locationCoordinates }) =>
-        this.state.bounds.contains(new google.maps.LatLng(locationCoordinates))
-      )
+      .filter(({ location }) => {
+        if (location) {
+          return bounds.contains(new google.maps.LatLng(location.coordinates));
+        }
+      })
       .filter(({ email }) => email !== "test@test.com");
 
-    const markers = users.map(({ locationCoordinates }) => ({
-      position: new google.maps.LatLng(
-        locationCoordinates.lat,
-        locationCoordinates.lng
-      )
+    const markers = users.map(({ location }) => ({
+      position: new google.maps.LatLng(location.coordinates)
     }));
     this.setState({ markers });
   };
@@ -156,7 +156,19 @@ class GoogleMap extends React.Component {
   };
 
   onGhostToggle = () =>
-    this.setState({ showLocation: !this.state.showLocation });
+    this.setState({ showLocation: !this.state.showLocation }, () => {
+      const token = localStorage.getItem("x-auth-token");
+      let isSharing;
+      if (this.state.showLocation) {
+        isSharing = true;
+      } else {
+        isSharing = false;
+      }
+      callPatchLocation(
+        { lat: this.state.lat, lng: this.state.lng, isSharing },
+        token
+      );
+    });
 
   render() {
     const { lat, lng, isLoading } = this.state;

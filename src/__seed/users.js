@@ -17,9 +17,11 @@ export const handleTestUserBeforeMount = async () => {
 export const seedRandomUsers = async (bounds, callback) => {
   const { data } = await callGetUsers();
   const users = data
-    .filter(({ locationCoordinates }) =>
-      bounds.contains(new google.maps.LatLng(locationCoordinates))
-    )
+    .filter(({ location }) => {
+      if (location) {
+        return bounds.contains(new google.maps.LatLng(location.coordinates));
+      }
+    })
     .filter(({ email }) => email !== "test@test.com");
   let markers = [];
   if (users.length < 10) {

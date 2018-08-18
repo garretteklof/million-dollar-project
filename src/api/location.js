@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const callPatchLocation = (location, token) =>
-  axios.patch("/current-location", location, {
+  axios.patch("/location", location, {
     headers: {
       "x-auth": token
     }

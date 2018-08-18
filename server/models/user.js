@@ -34,8 +34,7 @@ const UserSchema = new mongoose.Schema({
   },
   location: {
     isSharing: {
-      type: Boolean,
-      default: true
+      type: Boolean
     },
     coordinates: {
       lat: {

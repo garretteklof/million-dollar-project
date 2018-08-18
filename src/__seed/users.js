@@ -1,7 +1,7 @@
+import faker from "faker";
 import { callLogin, callLogout } from "../api/auth";
 import { callPostUsers, callGetUsers } from "../api/users";
 import { callPatchLocation } from "../api/location";
-import { names } from "./random-names";
 
 export const handleTestUserBeforeMount = async () => {
   const email = "test@test.com";
@@ -13,7 +13,7 @@ export const handleTestUserBeforeMount = async () => {
     await logoutTestUser();
     await loginTestUser(email, password);
   } else {
-    createNewTestUser({ email, password, firstName, lastName });
+    await createNewTestUser({ email, password, firstName, lastName });
   }
 };
 
@@ -39,7 +39,7 @@ export const seedRandomUsers = async (bounds, callback) => {
         southWest.lng() + lngSpan * Math.random()
       );
       markers.push({ position });
-      addRandomUser(position);
+      await addRandomUser(position);
     }
     await loginTestUser("test@test.com", "abc123");
     callback(markers);
@@ -84,12 +84,10 @@ const logoutTestUser = async () => {
 
 const addRandomUser = async location => {
   try {
-    const email = `${Math.random()
-      .toString(36)
-      .slice(-10)}@this-is-a-fake-email.com`;
-    const password = "abc123";
-    const firstName = names[Math.floor(Math.random() * names.length)];
-    const lastName = names[Math.floor(Math.random() * names.length)];
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
     const response = await callPostUsers({
       firstName,
       lastName,

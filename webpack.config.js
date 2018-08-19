@@ -32,7 +32,7 @@ module.exports = {
     publicPath: "/dist/",
     proxy: [
       {
-        context: ["/users", "/users/me", "/login", "/logout", "/location"],
+        context: ["/users", "/login", "/logout", "/location"],
         target: "http://localhost:3000"
       }
     ]

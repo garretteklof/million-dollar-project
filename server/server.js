@@ -8,7 +8,7 @@ const { mongoose } = require("./db/mongoose");
 const { User } = require("./models/user");
 
 const { authenticate } = require("./middleware/authenticate");
-const { scrubObj } = require("./helpers/patch");
+const { scrubObj } = require("./helpers/objects");
 
 const app = express();
 const port = process.env.PORT;

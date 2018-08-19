@@ -42,7 +42,10 @@ class GoogleMap extends React.Component {
           await seedRandomUsers(this.state.bounds, markers =>
             this.setState({ markers })
           );
-          this.props.__$setUsers();
+          //I have no real idea why this works.
+          //But so much going on with seeding test users
+          //neglible setTimeout keeps from having to refresh for users
+          setTimeout(() => this.props.__$setUsers(), 100);
         } catch (e) {
           console.log(e);
           this.props.__$setUsers();

@@ -18,3 +18,10 @@ export const callPatchUser = (id, payload, token) =>
   axios.patch(`/users/${id}`, payload, {
     headers: { "x-auth": token }
   });
+
+export const callPatchUserLocation = (id, location, token) =>
+  axios.patch(`/users/${id}/location`, location, {
+    headers: {
+      "x-auth": token
+    }
+  });

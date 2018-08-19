@@ -1,7 +1,11 @@
 import faker from "faker";
 import { callLogin, callLogout } from "../api/auth";
-import { callPostUsers, callGetUsers, callPatchUser } from "../api/users";
-import { callPatchLocation } from "../api/location";
+import {
+  callPostUsers,
+  callGetUsers,
+  callPatchUser,
+  callPatchUserLocation
+} from "../api/users";
 
 export const handleTestUserBeforeMount = async () => {
   const email = "test@test.com";
@@ -12,8 +16,9 @@ export const handleTestUserBeforeMount = async () => {
     await logoutTestUser();
     await loginTestUser(email, password);
   } else {
-    createNewTestUser({ email, password, name });
+    await createNewTestUser({ email, password, name });
   }
+  return localStorage.getItem("x-auth-token");
 };
 
 export const seedRandomUsers = async (bounds, callback) => {
@@ -38,7 +43,7 @@ export const seedRandomUsers = async (bounds, callback) => {
         southWest.lng() + lngSpan * Math.random()
       );
       markers.push({ position });
-      addRandomUser(position);
+      addRandomUser({ geo: position });
     }
     await loginTestUser("test@test.com", "abc123");
     callback(markers);
@@ -99,7 +104,7 @@ const addRandomUser = async location => {
     const token = response.headers["x-auth"];
     localStorage.setItem("x-auth-token", token);
     await callPatchUser(id, { avatar }, token);
-    await callPatchLocation(location, token);
+    await callPatchUserLocation(id, location, token);
     await callLogout(token);
   } catch (e) {
     console.log(e);

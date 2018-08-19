@@ -78,19 +78,25 @@ app.get("/users/me", authenticate, (req, res) => {
 
 /***************************** LOCATION *****************************/
 
-app.patch("/location", express.json(), authenticate, async (req, res) => {
-  try {
-    const { lat, lng, isSharing = true } = req.body;
-    const { location } = await User.findByIdAndUpdate(
-      res.locals.user._id,
-      { $set: { location: { geo: { lat, lng }, isSharing } } },
-      { new: true }
-    );
-    res.send(location);
-  } catch (e) {
-    res.status(400).send();
+app.patch(
+  "/users/:id/location",
+  express.json(),
+  authenticate,
+  async (req, res) => {
+    const id = req.params.id;
+    try {
+      const { geo, isSharing = true } = req.body;
+      const { _id, location } = await User.findByIdAndUpdate(
+        id,
+        { $set: { location: { geo, isSharing } } },
+        { new: true }
+      );
+      res.send({ user_id: _id, location });
+    } catch (e) {
+      res.status(400).send();
+    }
   }
-});
+);
 
 /***************************** AUTH *****************************/
 

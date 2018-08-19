@@ -11,8 +11,11 @@ import GhostToggle from "./GhostToggle";
 import { __$setUsers } from "../../../actions/users";
 import { setBounds } from "../../../actions/map";
 
-import { callGetUsers } from "../../../api/users";
-import { callPatchLocation } from "../../../api/location";
+import {
+  callGetUsers,
+  callGetMe,
+  callPatchUserLocation
+} from "../../../api/users";
 
 import {
   handleTestUserBeforeMount,
@@ -27,11 +30,14 @@ class GoogleMap extends React.Component {
     lng: -89.38419462801693,
     showLocation: false,
     isLoading: false,
-    geolocationDenied: false
+    geolocationDenied: false,
+    currentUserId: null
   };
 
-  componentDidMount() {
-    handleTestUserBeforeMount();
+  async componentDidMount() {
+    const token = await handleTestUserBeforeMount();
+    const { data } = await callGetMe(token);
+    this.setState({ currentUserId: data._id });
     // small mount delay w/ react-google-maps
     // can't access map ref on mount
     // ∴ need ~small setTimeout
@@ -89,7 +95,11 @@ class GoogleMap extends React.Component {
           const lat = coords.latitude;
           const lng = coords.longitude;
           try {
-            await callPatchLocation({ lat, lng }, token);
+            await callPatchUserLocation(
+              this.state.currentUserId,
+              { geo: { lat, lng } },
+              token
+            );
           } catch (e) {}
           this.setState({ lat, lng }, () => {
             /* NEED TO DO THIS BETTER LATER */
@@ -167,8 +177,9 @@ class GoogleMap extends React.Component {
       } else {
         isSharing = false;
       }
-      callPatchLocation(
-        { lat: this.state.lat, lng: this.state.lng, isSharing },
+      callPatchUserLocation(
+        this.state.currentUserId,
+        { geo: { lat: this.state.lat, lng: this.state.lng }, isSharing },
         token
       );
     });

@@ -6,14 +6,13 @@ import { callPatchLocation } from "../api/location";
 export const handleTestUserBeforeMount = async () => {
   const email = "test@test.com";
   const password = "abc123";
-  const firstName = "Slim";
-  const lastName = "Jesus";
+  const name = { first: "Slim", last: "Jesus" };
   const testUserExists = await checkIfTestUserExists(email);
   if (testUserExists) {
     await logoutTestUser();
     await loginTestUser(email, password);
   } else {
-    createNewTestUser({ email, password, firstName, lastName });
+    createNewTestUser({ email, password, name });
   }
 };
 
@@ -86,11 +85,9 @@ const addRandomUser = async location => {
   try {
     const email = faker.internet.exampleEmail();
     const password = faker.internet.password();
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
+    const name = { first: faker.name.firstName(), last: faker.name.lastName() };
     const response = await callPostUsers({
-      firstName,
-      lastName,
+      name,
       email,
       password
     });

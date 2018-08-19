@@ -26,8 +26,8 @@ app.get("/users", async (req, res) => {
 
 app.post("/users", express.json(), async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
-    const user = new User({ firstName, lastName, email, password });
+    const { name, email, password } = req.body;
+    const user = new User({ name, email, password });
     await user.save();
     const token = await user.generateAuthToken();
     res.header("x-auth", token).send(user);

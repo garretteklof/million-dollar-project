@@ -4,13 +4,15 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
+  name: {
+    first: {
+      type: String,
+      required: true
+    },
+    last: {
+      type: String,
+      required: true
+    }
   },
   email: {
     type: String,
@@ -61,8 +63,8 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods.toJSON = function() {
   const user = this;
-  const { _id, firstName, lastName, email, location } = user.toObject();
-  return { _id, firstName, lastName, email, location };
+  const { _id, name, email, location } = user.toObject();
+  return { _id, name, email, location };
 };
 
 UserSchema.methods.generateAuthToken = function() {

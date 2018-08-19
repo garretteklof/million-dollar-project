@@ -1,6 +1,6 @@
 import faker from "faker";
 import { callLogin, callLogout } from "../api/auth";
-import { callPostUsers, callGetUsers } from "../api/users";
+import { callPostUsers, callGetUsers, callPatchUser } from "../api/users";
 import { callPatchLocation } from "../api/location";
 
 export const handleTestUserBeforeMount = async () => {
@@ -55,8 +55,11 @@ const checkIfTestUserExists = async email => {
 const createNewTestUser = async user => {
   try {
     const response = await callPostUsers(user);
+    const id = response.data._id;
+    const avatar = faker.image.avatar();
     const token = response.headers["x-auth"];
     localStorage.setItem("x-auth-token", token);
+    await callPatchUser(id, { avatar }, token);
   } catch (e) {
     console.log(e);
   }
@@ -91,8 +94,11 @@ const addRandomUser = async location => {
       email,
       password
     });
+    const id = response.data._id;
+    const avatar = faker.image.avatar();
     const token = response.headers["x-auth"];
     localStorage.setItem("x-auth-token", token);
+    await callPatchUser(id, { avatar }, token);
     await callPatchLocation(location, token);
     await callLogout(token);
   } catch (e) {

@@ -8,6 +8,7 @@ const { mongoose } = require("./db/mongoose");
 const { User } = require("./models/user");
 
 const { authenticate } = require("./middleware/authenticate");
+const { scrubObj } = require("./helpers/patch");
 
 const app = express();
 const port = process.env.PORT;
@@ -31,6 +32,25 @@ app.post("/users", express.json(), async (req, res) => {
     await user.save();
     const token = await user.generateAuthToken();
     res.header("x-auth", token).send(user);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
+app.patch("/users/:id", express.json(), authenticate, async (req, res) => {
+  const id = req.params.id;
+  if (!ObjectID.isValid(id)) res.status(404).send();
+  try {
+    const { name, avatar, forte, password } = req.body;
+    let obj = { name, avatar, forte, password };
+    const cleanBody = scrubObj(obj);
+    const user = await User.findByIdAndUpdate(
+      id,
+      { $set: { ...cleanBody } },
+      { new: true }
+    );
+    if (!user) res.status(404).send();
+    res.send(user);
   } catch (e) {
     res.status(400).send();
   }

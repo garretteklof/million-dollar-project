@@ -13,3 +13,8 @@ export const callGetMe = token =>
       "x-auth": token
     }
   });
+
+export const callPatchUser = (id, payload, token) =>
+  axios.patch(`/users/${id}`, payload, {
+    headers: { "x-auth": token }
+  });

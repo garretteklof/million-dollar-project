@@ -34,6 +34,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ["Visionary", "Engineer", "Artist", "TBD"]
   },
+  avatar: {
+    type: String
+  },
   location: {
     isSharing: {
       type: Boolean

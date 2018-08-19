@@ -32,7 +32,8 @@ const UserSchema = new mongoose.Schema({
   },
   forte: {
     type: String,
-    enum: ["Visionary", "Engineer", "Artist", "TBD"]
+    enum: ["visionary", "engineer", "artist", "tbd"],
+    default: "tbd"
   },
   avatar: {
     type: String
@@ -66,8 +67,8 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods.toJSON = function() {
   const user = this;
-  const { _id, name, email, location } = user.toObject();
-  return { _id, name, email, location };
+  const { _id, name, email, location, avatar, forte } = user.toObject();
+  return { _id, name, email, location, avatar, forte };
 };
 
 UserSchema.methods.generateAuthToken = function() {

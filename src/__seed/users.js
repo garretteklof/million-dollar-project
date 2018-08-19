@@ -94,19 +94,25 @@ const addRandomUser = async location => {
     const email = faker.internet.exampleEmail();
     const password = faker.internet.password();
     const name = { first: faker.name.firstName(), last: faker.name.lastName() };
+    const avatar = faker.image.avatar();
+    const forte = chooseRandomForte();
     const response = await callPostUsers({
       name,
       email,
       password
     });
     const id = response.data._id;
-    const avatar = faker.image.avatar();
     const token = response.headers["x-auth"];
     localStorage.setItem("x-auth-token", token);
-    await callPatchUser(id, { avatar }, token);
+    await callPatchUser(id, { avatar, forte }, token);
     await callPatchUserLocation(id, location, token);
     await callLogout(token);
   } catch (e) {
     console.log(e);
   }
+};
+
+const chooseRandomForte = () => {
+  const forteArray = ["visionary", "engineer", "artist", "tbd"];
+  return forteArray[Math.floor(Math.random() * forteArray.length)];
 };

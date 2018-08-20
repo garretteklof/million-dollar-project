@@ -36,7 +36,26 @@ const UserSchema = new mongoose.Schema({
     default: "tbd"
   },
   avatar: {
-    type: String
+    type: String,
+    trim: true
+  },
+  socialMedia: {
+    github: {
+      type: String,
+      trim: true
+    },
+    linkedIn: {
+      type: String,
+      trim: true
+    },
+    dribbble: {
+      type: String,
+      trim: true
+    },
+    twitter: {
+      type: String,
+      trim: true
+    }
   },
   location: {
     isSharing: {
@@ -67,8 +86,16 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.methods.toJSON = function() {
   const user = this;
-  const { _id, name, email, location, avatar, forte } = user.toObject();
-  return { _id, name, email, location, avatar, forte };
+  const {
+    _id,
+    name,
+    email,
+    location,
+    avatar,
+    forte,
+    socialMedia
+  } = user.toObject();
+  return { _id, name, email, location, avatar, forte, socialMedia };
 };
 
 UserSchema.methods.generateAuthToken = function() {

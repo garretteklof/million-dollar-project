@@ -8,7 +8,7 @@ const { mongoose } = require("./db/mongoose");
 const { User } = require("./models/user");
 
 const { authenticate } = require("./middleware/authenticate");
-const { scrubObj } = require("./helpers/objects");
+const { scrubObj, validateSM } = require("./helpers/objects");
 
 const app = express();
 const port = process.env.PORT;
@@ -41,8 +41,9 @@ app.patch("/users/:id", express.json(), authenticate, async (req, res) => {
   const id = req.params.id;
   if (!ObjectID.isValid(id)) res.status(404).send();
   try {
-    const { name, avatar, forte, password } = req.body;
-    let obj = { name, avatar, forte, password };
+    const { name, avatar, forte, password, socialMedia = {} } = req.body;
+    const validSM = validateSM(socialMedia);
+    let obj = { name, avatar, forte, password, socialMedia: validSM };
     const cleanBody = scrubObj(obj);
     const user = await User.findByIdAndUpdate(
       id,

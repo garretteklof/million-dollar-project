@@ -12,7 +12,7 @@ module.exports = {
   module: {
     rules: [
       { loader: "babel-loader", test: /\.js$/, exclude: /node_modules/ },
-      { loader: "svg-url-loader", test: /\.svg/ }
+      { loader: "svg-sprite-loader", test: /\.svg$/ }
     ]
   },
   optimization: {

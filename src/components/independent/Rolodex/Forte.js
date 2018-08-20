@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import Sprite from "../../shared/Sprite/";
+
 import { COLORS } from "../../shared/Variables";
 
 const ForteContainer = styled.div`
@@ -15,17 +17,15 @@ const ForteContainer = styled.div`
   ${({ engineer }) => engineer && `background: ${COLORS.sky}`};
   ${({ artist }) => artist && `background: ${COLORS.strawberry}`};
   ${({ tbd }) => tbd && `background: ${COLORS.timberwolf}`};
-`;
-const ForteIcon = styled.svg`
-  height: 3rem;
-  width: 3rem;
+  > svg {
+    height: 3rem;
+    width: 3rem;
+  }
 `;
 
 const Forte = ({ forte }) => (
   <ForteContainer {...{ [forte]: true }}>
-    <ForteIcon>
-      <use xlinkHref={`/images/sprite.svg#icon-${forte}`} />
-    </ForteIcon>
+    <Sprite icon={forte} />
   </ForteContainer>
 );
 

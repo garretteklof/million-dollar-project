@@ -11,8 +11,8 @@ const ForteContainer = styled.div`
   width: 4rem;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  ${({ visionary }) => visionary && `background: ${COLORS.pumpkin}`};
-  ${({ engineer }) => engineer && `background: ${COLORS.mustard}`};
+  ${({ visionary }) => visionary && `background: ${COLORS.mustard}`};
+  ${({ engineer }) => engineer && `background: ${COLORS.sky}`};
   ${({ artist }) => artist && `background: ${COLORS.strawberry}`};
   ${({ tbd }) => tbd && `background: ${COLORS.timberwolf}`};
 `;

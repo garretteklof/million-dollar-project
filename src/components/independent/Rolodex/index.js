@@ -2,18 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
+import Card from "./Card";
+
 import { fetchUsersInSurroundingArea } from "../../../selectors/users";
 
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
-  background-color: papayawhip;
-  display: flex;
-  flex-direction: column;
-  > * {
-    font-size: 1.6rem;
-    color: palevioletred;
-  }
+  background-color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 2rem;
+  grid-gap: 2rem;
+  justify-content: center;
+  align-content: start;
 `;
 
 class UserList extends React.Component {
@@ -22,8 +24,8 @@ class UserList extends React.Component {
     console.log("User Count: " + users.length);
     return (
       <Wrapper>
-        {users.map(({ email }) => (
-          <div key={email}>{email}</div>
+        {users.map(user => (
+          <Card key={user._id} {...user} />
         ))}
       </Wrapper>
     );

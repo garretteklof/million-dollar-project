@@ -10,27 +10,27 @@ const scrubObj = obj => {
 
 const validateSM = obj => {
   let evalObj = {};
-  for (let [key, value] of Object.entries(obj)) {
+  Object.entries(obj).forEach(([key, value]) => {
     let eval;
-    if (value) {
-      switch (key) {
-        case "github":
-          eval = regEx.githubUrl.test(value);
-          break;
-        case "linkedIn":
-          eval = regEx.linkedInUrl.test(value);
-          break;
-        case "twitter":
-          eval = regEx.twitterUrl.test(value);
-          break;
-        case "dribbble":
-          eval = regEx.dribbbleUrl.test(value);
-          break;
-      }
-      if (!eval) value = undefined;
+    switch (key) {
+      case "github":
+        eval = regEx.githubUrl.test(value);
+        break;
+      case "linkedIn":
+        eval = regEx.linkedInUrl.test(value);
+        break;
+      case "twitter":
+        eval = regEx.twitterUrl.test(value);
+        break;
+      case "dribbble":
+        eval = regEx.dribbbleUrl.test(value);
     }
+    if (!eval) evalObj[key] = undefined;
     evalObj[key] = value;
-  }
+  });
+  // checks to see if empty object, if so set to undefined to be scrubbed later
+  if (Object.keys(evalObj).length === 0 && evalObj.constructor === Object)
+    evalObj = undefined;
   return evalObj;
 };
 

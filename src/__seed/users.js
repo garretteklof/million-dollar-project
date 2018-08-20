@@ -96,6 +96,7 @@ const addRandomUser = async location => {
     const name = { first: faker.name.firstName(), last: faker.name.lastName() };
     const avatar = faker.image.avatar();
     const forte = chooseRandomForte();
+    const socialMedia = chooseRandomSocialMedia();
     const response = await callPostUsers({
       name,
       email,
@@ -104,7 +105,7 @@ const addRandomUser = async location => {
     const id = response.data._id;
     const token = response.headers["x-auth"];
     localStorage.setItem("x-auth-token", token);
-    await callPatchUser(id, { avatar, forte }, token);
+    await callPatchUser(id, { avatar, forte, socialMedia }, token);
     await callPatchUserLocation(id, location, token);
     await callLogout(token);
   } catch (e) {
@@ -115,4 +116,24 @@ const addRandomUser = async location => {
 const chooseRandomForte = () => {
   const forteArray = ["visionary", "engineer", "artist", "tbd"];
   return forteArray[Math.floor(Math.random() * forteArray.length)];
+};
+
+const chooseRandomSocialMedia = () => {
+  const socialObj = {
+    github: "https://github.com/garretteklof",
+    linkedIn: "https://www.linkedin.com/in/garrett-eklof/",
+    dribbble: "https://dribbble.com/slaterdesign",
+    twitter: "https://twitter.com/T_Knight31"
+  };
+  const keys = Object.keys(socialObj);
+  const number = Math.floor(Math.random() * 3 + 1);
+  let obj = {};
+  for (let i = 0; i <= number; i++) {
+    let randomKey;
+    do {
+      randomKey = keys[(keys.length * Math.random()) << 0];
+    } while (obj[randomKey]);
+    obj[randomKey] = socialObj[randomKey];
+  }
+  return obj;
 };

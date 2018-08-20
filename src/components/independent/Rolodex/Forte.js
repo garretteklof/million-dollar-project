@@ -21,21 +21,8 @@ const ForteIcon = styled.svg`
   width: 3rem;
 `;
 
-const setForte = forte => {
-  switch (forte) {
-    case "visionary":
-      return { visionary: true };
-    case "engineer":
-      return { engineer: true };
-    case "artist":
-      return { artist: true };
-    case "tbd":
-      return { tbd: true };
-  }
-};
-
 const Forte = ({ forte }) => (
-  <ForteContainer {...setForte(forte)}>
+  <ForteContainer {...{ [forte]: true }}>
     <ForteIcon>
       <use xlinkHref={`/images/sprite.svg#icon-${forte}`} />
     </ForteIcon>

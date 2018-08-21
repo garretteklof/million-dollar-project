@@ -1,12 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
-import Discovery from "../components/pages/Discovery";
+import Discover from "../components/pages/Discover";
 
 const App = () => (
   <Router>
     <Switch>
-      <Route path="/" component={Discovery} exact={true} />
+      <Route path="/discover" component={Discover} />
     </Switch>
   </Router>
 );

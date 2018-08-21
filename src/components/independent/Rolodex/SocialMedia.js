@@ -11,9 +11,9 @@ const SocialMediaContainer = styled.div`
   margin: 0.5rem 0;
 `;
 
-const SocialMediaLink = FORTE_PROP_BG.withComponent("a").extend`
-  height: 2rem;
-  width: 2rem;
+const SocialMediaCircle = FORTE_PROP_BG.extend`
+  height: 2.25rem;
+  width: 2.25rem;
   border-radius: 100%;
   display: flex;
   justify-content: center;
@@ -25,8 +25,8 @@ const SocialMediaLink = FORTE_PROP_BG.withComponent("a").extend`
     margin-right: 0.5rem;
   }
   > svg {
-    height: 1rem;
-    width: 1rem;
+    height: 1.25rem;
+    width: 1.25rem;
     fill: white;
   }
 `;
@@ -37,9 +37,9 @@ export default class SocialMedia extends React.Component {
     let mediaArray = [];
     Object.entries(socialMedia).forEach(([key, value]) => {
       mediaArray.push(
-        <SocialMediaLink key={key} href={value} {...{ [forte]: true }}>
+        <SocialMediaCircle key={key} {...{ [forte]: true }}>
           <Sprite icon={key.toLowerCase()} />
-        </SocialMediaLink>
+        </SocialMediaCircle>
       );
     });
     return mediaArray;

@@ -4322,7 +4322,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -4467,6 +4467,15 @@ react-dom@^16.2.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.0"
+
+react-flip-toolkit@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-4.0.2.tgz#66b6b94dabf7fae76e1d21c012dd64f6fdb76309"
+  dependencies:
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    rematrix "^0.2.2"
+    wobble "^1.5.0"
 
 react-google-maps@^9.4.5:
   version "9.4.5"
@@ -4661,6 +4670,10 @@ regjsparser@^0.1.4:
   resolved "https://registry.yarnpkg.com/regjsparser/-/regjsparser-0.1.5.tgz#7ee8f84dc6fa792d3fd0ae228d24bd949ead205c"
   dependencies:
     jsesc "~0.5.0"
+
+rematrix@^0.2.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/rematrix/-/rematrix-0.2.3.tgz#37ec6b060a3c03c0fde3cf5628c6e109ea51e9d4"
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
@@ -5804,6 +5817,10 @@ widest-line@^2.0.0:
   resolved "https://registry.yarnpkg.com/widest-line/-/widest-line-2.0.0.tgz#0142a4e8a243f8882c0233aa0e0281aa76152273"
   dependencies:
     string-width "^2.1.1"
+
+wobble@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/wobble/-/wobble-1.5.0.tgz#5192d6681642ca22e4e133408628b99e9a7d1559"
 
 wordwrap@~1.0.0:
   version "1.0.0"

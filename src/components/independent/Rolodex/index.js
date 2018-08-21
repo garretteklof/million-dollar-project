@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Flipper } from "react-flip-toolkit";
 import styled from "styled-components";
 
 import Card from "./Card";
@@ -23,11 +24,13 @@ class UserList extends React.Component {
     const { users } = this.props;
     console.log("User Count: " + users.length);
     return (
-      <Wrapper>
-        {users.map(user => (
-          <Card key={user._id} {...user} />
-        ))}
-      </Wrapper>
+      <Flipper flipKey={users.length}>
+        <Wrapper>
+          {users.map(user => (
+            <Card key={user._id} {...user} />
+          ))}
+        </Wrapper>
+      </Flipper>
     );
   }
 }

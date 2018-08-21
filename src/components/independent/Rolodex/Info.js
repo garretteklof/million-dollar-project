@@ -16,11 +16,11 @@ const Name = styled.h1`
   font-size: 1.6rem;
 `;
 
-const Info = props => (
+const Info = ({ name, socialMedia, forte }) => (
   <InfoWrap>
-    <Name style={{ marginTop: "auto" }}>{props.name.first}</Name>
-    <Name>{props.name.last}</Name>
-    <SocialMedia {...props} />
+    <Name style={{ marginTop: "auto" }}>{name.first}</Name>
+    <Name>{name.last}</Name>
+    <SocialMedia {...{ socialMedia, forte }} />
   </InfoWrap>
 );
 

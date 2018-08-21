@@ -1,4 +1,5 @@
 import React from "react";
+import { Flipped } from "react-flip-toolkit";
 import styled from "styled-components";
 import { rgba } from "polished";
 
@@ -19,12 +20,14 @@ const StyledCard = styled.div`
   grid-column-gap: 0.75rem;
 `;
 
-const Card = props => (
-  <StyledCard>
-    <Avatar {...props} />
-    <Info {...props} />
-    <Forte {...props} />
-  </StyledCard>
+const Card = ({ _id, name, avatar, forte, socialMedia }, ...rest) => (
+  <Flipped flipId={_id} spring="stiff">
+    <StyledCard {...rest}>
+      <Avatar {...{ avatar, name }} />
+      <Info {...{ name, socialMedia, forte }} />
+      <Forte {...{ forte }} />
+    </StyledCard>
+  </Flipped>
 );
 
 export default Card;

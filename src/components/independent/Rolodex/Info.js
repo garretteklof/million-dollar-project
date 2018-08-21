@@ -8,18 +8,19 @@ const InfoWrap = styled.div`
   color: ${COLORS.gunmetal};
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   flex-direction: column;
 `;
-const UserName = styled.h1`
+
+const Name = styled.h1`
   font-size: 1.6rem;
-  /* margin-bottom: auto; */
 `;
 
-const Info = ({ name }) => (
+const Info = props => (
   <InfoWrap>
-    <UserName>{`${name.first} ${name.last}`}</UserName>
-    <SocialMedia />
+    <Name style={{ marginTop: "auto" }}>{props.name.first}</Name>
+    <Name>{props.name.last}</Name>
+    <SocialMedia {...props} />
   </InfoWrap>
 );
 

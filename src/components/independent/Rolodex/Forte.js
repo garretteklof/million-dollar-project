@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 import Sprite from "../../shared/Sprite/";
 
-import { COLORS } from "../../shared/Variables";
+import { FORTE_PROP_BG } from "../../shared/Variables";
 
-const ForteContainer = styled.div`
+const ForteContainer = FORTE_PROP_BG.extend`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,10 +13,6 @@ const ForteContainer = styled.div`
   width: 4rem;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  ${({ visionary }) => visionary && `background: ${COLORS.mustard}`};
-  ${({ engineer }) => engineer && `background: ${COLORS.sky}`};
-  ${({ artist }) => artist && `background: ${COLORS.strawberry}`};
-  ${({ tbd }) => tbd && `background: ${COLORS.timberwolf}`};
   > svg {
     height: 3rem;
     width: 3rem;

@@ -1,3 +1,6 @@
+import React from "react";
+import styled, { keyframes } from "styled-components";
+
 export const MAP_PADDING = "2rem";
 
 export const COLORS = {
@@ -7,3 +10,10 @@ export const COLORS = {
   gunmetal: "#242D3C",
   timberwolf: "#D9D8D7"
 };
+
+export const FORTE_PROP_BG = styled.div`
+  ${({ visionary }) => visionary && `background: ${COLORS.mustard}`};
+  ${({ engineer }) => engineer && `background: ${COLORS.sky}`};
+  ${({ artist }) => artist && `background: ${COLORS.strawberry}`};
+  ${({ tbd }) => tbd && `background: ${COLORS.timberwolf}`};
+`;

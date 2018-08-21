@@ -16,7 +16,7 @@ const StyledCard = styled.div`
   box-shadow: 0 1rem 2rem ${rgba("black", 0.1)};
   display: grid;
   grid-template-columns: min-content 1fr min-content;
-  grid-column-gap: 0.5rem;
+  grid-column-gap: 0.75rem;
 `;
 
 const Card = props => (

@@ -1,6 +1,5 @@
 import React from "react";
 
-import { GOOGLE_MAPS_API_KEY } from "../../../../config";
 import { MAP_PADDING } from "../../../shared/Variables";
 
 export default {

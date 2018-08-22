@@ -12,6 +12,7 @@ const App = () => (
   <Router>
     <Switch>
       <Route path="/discover" component={Discover} />
+      <Redirect to="/discover" />
     </Switch>
   </Router>
 );

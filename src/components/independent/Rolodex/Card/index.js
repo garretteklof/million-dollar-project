@@ -3,9 +3,6 @@ import { Link } from "react-router-dom";
 import { Flipped } from "react-flip-toolkit";
 import styled from "styled-components";
 import { rgba } from "polished";
-
-import { COLORS } from "../../shared/Variables";
-
 import Avatar from "./Avatar";
 import Info from "./Info";
 import Forte from "./Forte";

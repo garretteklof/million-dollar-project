@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-import SocialMedia from "./SocialMedia";
-import { COLORS } from "../../shared/Variables";
+import SocialMedia from "../../../shared/User/SocialMedia";
+
+import { COLORS } from "../../../shared/Variables";
 
 const InfoWrap = styled.div`
   color: ${COLORS.gunmetal};

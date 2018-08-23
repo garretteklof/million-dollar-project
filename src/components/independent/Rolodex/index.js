@@ -1,13 +1,13 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import Grid from "./Grid";
-import User from "./User";
+import GridOfCards from "./GridOfCards";
+import UserSummary from "./UserSummary";
 
 const Rolodex = ({ match }) => (
   <Switch>
-    <Route path={`${match.path}/user-:id`} component={User} />
-    <Route path={`${match.path}`} component={Grid} />
+    <Route path={`${match.path}/user-:id`} component={UserSummary} />
+    <Route path={`${match.path}`} component={GridOfCards} />
     <Redirect to={`${match.url}`} />
   </Switch>
 );

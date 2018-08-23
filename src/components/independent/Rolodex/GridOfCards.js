@@ -2,8 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Flipper } from "react-flip-toolkit";
 import styled from "styled-components";
-
-import Card from "./Card";
+import Card from "./Card/";
 
 import { fetchUsersInSurroundingArea } from "../../../selectors/users";
 
@@ -19,7 +18,7 @@ const Wrapper = styled.div`
   align-content: start;
 `;
 
-const Grid = ({ users, ...rest }) => (
+const GridOfCards = ({ users, ...rest }) => (
   <Flipper flipKey={users.length}>
     <Wrapper>
       {console.log("User Count: " + users.length)}
@@ -34,4 +33,4 @@ const mapStateToProps = ({ users, map }) => ({
   users: fetchUsersInSurroundingArea(users, map.bounds)
 });
 
-export default connect(mapStateToProps)(Grid);
+export default connect(mapStateToProps)(GridOfCards);

@@ -11,9 +11,9 @@ export const COLORS = {
   timberwolf: "#D9D8D7"
 };
 
-export const FORTE_PROP_BG = styled.div`
-  ${({ visionary }) => visionary && `background: ${COLORS.mustard}`};
-  ${({ engineer }) => engineer && `background: ${COLORS.sky}`};
-  ${({ artist }) => artist && `background: ${COLORS.strawberry}`};
-  ${({ tbd }) => tbd && `background: ${COLORS.timberwolf}`};
-`;
+export const FORTE_PROP_BG = ({ visionary, engineer, artist, tbd }) => {
+  if (visionary) return visionary && `background: ${COLORS.mustard}`;
+  else if (engineer) return engineer && `background: ${COLORS.sky}`;
+  else if (artist) return artist && `background: ${COLORS.strawberry}`;
+  else return tbd && `background: ${COLORS.timberwolf}`;
+};

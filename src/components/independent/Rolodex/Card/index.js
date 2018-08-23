@@ -34,9 +34,17 @@ const StyledCard = styled.div`
   }
 `;
 
-const Card = ({ _id, name, avatar, forte, socialMedia, match }) => (
+const Card = ({
+  _id,
+  name,
+  avatar,
+  forte,
+  socialMedia,
+  internalUrl,
+  match
+}) => (
   <Flipped flipId={_id} spring="stiff">
-    <FlipWrapLink to={`${match.path}/user-${_id}`}>
+    <FlipWrapLink to={`${match.path}/${internalUrl}`}>
       <StyledCard>
         <Avatar {...{ avatar, name }} />
         <Info {...{ name, socialMedia, forte }} />

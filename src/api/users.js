@@ -14,8 +14,8 @@ export const callGetMe = token =>
     }
   });
 
-export const callGetUser = (id, token) =>
-  axios.get(`/users/${id}`, {
+export const callGetUser = (internalUrl, token) =>
+  axios.get(`/users/${internalUrl}`, {
     headers: { "x-auth": token }
   });
 

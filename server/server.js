@@ -9,6 +9,7 @@ const { User } = require("./models/user");
 
 const { authenticate } = require("./middleware/authenticate");
 const { scrubObj, validateSM } = require("./helpers/objects");
+const { generateUniqueFrag } = require("./helpers/strings");
 
 const app = express();
 const port = process.env.PORT;
@@ -32,10 +33,26 @@ app.get("/users", async (req, res) => {
 app.post("/users", express.json(), async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const user = new User({ name, email, password });
+    let internalUrl = `${name.first.toLowerCase()}-${name.last.toLowerCase()}`;
+    const usersWithSameName = await User.find({ name });
+    if (usersWithSameName.length) {
+      internalUrl += generateUniqueFrag(usersWithSameName.length);
+    }
+    const user = new User({ name, email, password, internalUrl });
     await user.save();
     const token = await user.generateAuthToken();
     res.header("x-auth", token).send(user);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
+app.get("/users/:internalUrl", authenticate, async (req, res) => {
+  const internalUrl = req.params.internalUrl;
+  try {
+    const user = await User.findOne({ internalUrl });
+    if (!user) res.status(404).send();
+    res.send(user);
   } catch (e) {
     res.status(400).send();
   }

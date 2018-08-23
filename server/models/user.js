@@ -81,21 +81,36 @@ const UserSchema = new mongoose.Schema({
         required: true
       }
     }
-  ]
+  ],
+  internalUrl: {
+    type: String,
+    required: true,
+    unique: true
+  }
 });
 
 UserSchema.methods.toJSON = function() {
   const user = this;
   const {
-    _id,
     name,
     email,
     location,
     avatar,
     forte,
-    socialMedia
+    socialMedia,
+    internalUrl,
+    _id
   } = user.toObject();
-  return { _id, name, email, location, avatar, forte, socialMedia };
+  return {
+    name,
+    email,
+    location,
+    avatar,
+    forte,
+    socialMedia,
+    internalUrl,
+    _id
+  };
 };
 
 UserSchema.methods.generateAuthToken = function() {

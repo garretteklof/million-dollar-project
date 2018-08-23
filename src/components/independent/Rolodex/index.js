@@ -6,7 +6,7 @@ import UserSummary from "./UserSummary";
 
 const Rolodex = ({ match }) => (
   <Switch>
-    <Route path={`${match.path}/user-:id`} component={UserSummary} />
+    <Route path={`${match.path}/:internalUrl`} component={UserSummary} />
     <Route path={`${match.path}`} component={GridOfCards} />
     <Redirect to={`${match.url}`} />
   </Switch>

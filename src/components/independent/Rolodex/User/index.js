@@ -45,7 +45,10 @@ export default class User extends React.Component {
 
   setUser = async () => {
     const token = localStorage.getItem("x-auth-token");
-    const { data } = await callGetUser(this.props.match.params.id, token);
+    const { data } = await callGetUser(
+      this.props.match.params.internalUrl,
+      token
+    );
     const { _id, name, email, avatar, forte, socialMedia } = data;
     this.setState({
       id: _id,

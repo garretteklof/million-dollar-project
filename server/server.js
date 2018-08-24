@@ -2,6 +2,8 @@ require("./config/config");
 
 const path = require("path");
 const express = require("express");
+const http = require("http");
+const socketIO = require("socket.io");
 const { ObjectID } = require("mongodb");
 
 const { mongoose } = require("./db/mongoose");
@@ -12,6 +14,8 @@ const { scrubObj, validateSM } = require("./helpers/objects");
 const { generateUniqueFrag } = require("./helpers/strings");
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 const port = process.env.PORT;
 const publicPath = path.join(__dirname, "..", "public");
 
@@ -150,12 +154,20 @@ app.delete("/logout", authenticate, async (req, res) => {
   }
 });
 
+/***************************** SOCKET.IO *****************************/
+
+const chat = io.of("/chat").on("connection", socket => {
+  socket.emit("test", {
+    hello: "This worked."
+  });
+});
+
 /***************************** FRONTEND *****************************/
 
 app.get("*", express.static(publicPath), (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port: ${port}!`);
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import SocialMedia from "./SocialMedia";
@@ -70,6 +71,7 @@ export default class User extends React.Component {
         <Info>
           <Name>{this.state.firstName + " " + this.state.lastName}</Name>
           <Forte {...{ forte }} />
+          <Link to="/discover/chat">Chat</Link>
         </Info>
       </Grid>
     );

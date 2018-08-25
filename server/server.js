@@ -156,10 +156,8 @@ app.delete("/logout", authenticate, async (req, res) => {
 
 /***************************** SOCKET.IO *****************************/
 
-const chat = io.of("/chat").on("connection", socket => {
-  socket.emit("test", {
-    hello: "This worked."
-  });
+io.of("/chat").on("connection", socket => {
+  socket.on("createMessage", data => console.log(data));
 });
 
 /***************************** FRONTEND *****************************/

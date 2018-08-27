@@ -157,7 +157,7 @@ app.delete("/logout", authenticate, async (req, res) => {
 /***************************** SOCKET.IO *****************************/
 
 io.of("/chat").on("connection", socket => {
-  socket.on("createMessage", data => console.log(data));
+  socket.on("sendMessage", ({ message }) => console.log(message));
 });
 
 /***************************** FRONTEND *****************************/

@@ -1,12 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import SocialMedia from "./SocialMedia";
 import Forte from "./Forte";
-import Chat from "../../Chat";
-import ChatWindow from "./ChatWindow";
-import Button from "../../../shared/Button/";
 import { callGetUser } from "../../../../api/users";
 
 const Grid = styled.div`
@@ -40,8 +36,7 @@ export default class User extends React.Component {
     email: null,
     avatar: null,
     forte: null,
-    socialMedia: null,
-    chatWindowOpen: true
+    socialMedia: null
   };
 
   componentDidMount() {
@@ -66,20 +61,8 @@ export default class User extends React.Component {
     });
   };
 
-  onChatClick = () => {
-    const { chatWindowOpen } = this.state;
-    this.setState({ chatWindowOpen: !chatWindowOpen });
-  };
-
   render() {
-    const {
-      forte,
-      socialMedia,
-      avatar,
-      firstName,
-      lastName,
-      chatWindowOpen
-    } = this.state;
+    const { forte, socialMedia, avatar, firstName, lastName } = this.state;
     return (
       <Grid>
         <Avatar {...{ avatar, firstName, lastName }} />
@@ -87,8 +70,6 @@ export default class User extends React.Component {
         <Info>
           <Name>{this.state.firstName + " " + this.state.lastName}</Name>
           <Forte {...{ forte }} />
-          {chatWindowOpen && <ChatWindow />}
-          <Button onClick={this.onChatClick}>Chat</Button>
         </Info>
       </Grid>
     );

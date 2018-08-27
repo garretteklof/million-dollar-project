@@ -5,9 +5,8 @@ const StyledButton = styled.button`
   display: inline-block;
   cursor: pointer;
   color: palevioletred;
-  font-size: 2em;
-  margin: 1em;
-  padding: 0.25em 1em;
+  font-size: 2rem;
+  padding: 1rem 2rem;
   border: 2px solid palevioletred;
   border-radius: 3px;
   ${props =>

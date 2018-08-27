@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-const ChatSpace = styled.ul`
+const Area = styled.ul`
   height: 100%;
   width: 100%;
   background: lightgrey;
 `;
-const UserChatSpace = ({ messages }) => (
-  <ChatSpace>
+const ChatArea = ({ messages }) => (
+  <Area>
     {messages.map(message => (
       <li key={message}>{message}</li>
     ))}
-  </ChatSpace>
+  </Area>
 );
 
-export default UserChatSpace;
+export default ChatArea;

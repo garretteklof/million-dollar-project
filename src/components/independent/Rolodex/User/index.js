@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Avatar from "./Avatar";
 import SocialMedia from "./SocialMedia";
 import Forte from "./Forte";
-import { callGetUser } from "../../../../api/users";
 
 const Grid = styled.div`
   display: grid;
@@ -28,50 +27,15 @@ const Name = styled.h1`
   font-size: 2rem;
 `;
 
-export default class User extends React.Component {
-  state = {
-    id: null,
-    firstName: null,
-    lastName: null,
-    email: null,
-    avatar: null,
-    forte: null,
-    socialMedia: null
-  };
+const User = ({ name = { first: "", last: "" }, ...rest }) => (
+  <Grid>
+    <Avatar {...name} {...rest} />
+    <SocialMedia {...rest} />
+    <Info>
+      <Name>{name.first + " " + name.last}</Name>
+      <Forte {...rest} />
+    </Info>
+  </Grid>
+);
 
-  componentDidMount() {
-    this.setUser();
-  }
-
-  setUser = async () => {
-    const token = localStorage.getItem("x-auth-token");
-    const { data } = await callGetUser(
-      this.props.match.params.internalUrl,
-      token
-    );
-    const { _id, name, email, avatar, forte, socialMedia } = data;
-    this.setState({
-      id: _id,
-      firstName: name.first,
-      lastName: name.last,
-      email,
-      avatar,
-      forte,
-      socialMedia
-    });
-  };
-
-  render() {
-    const { forte, socialMedia, avatar, firstName, lastName } = this.state;
-    return (
-      <Grid>
-        <Avatar {...{ avatar, firstName, lastName }} />
-        <SocialMedia {...{ forte, socialMedia }} />
-        <Info>
-          <Name>{this.state.firstName + " " + this.state.lastName}</Name>
-          <Forte {...{ forte }} />
-        </Info>
-      </Grid>
-    );
-  }
-}
+export default User;

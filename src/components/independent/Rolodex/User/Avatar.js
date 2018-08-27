@@ -7,8 +7,8 @@ const AvatarImage = styled.img`
   border-radius: 1rem;
 `;
 
-const Avatar = ({ avatar, firstName, lastName }) => (
-  <AvatarImage src={avatar} alt={`${firstName} ${lastName}'s avatar`} />
+const Avatar = ({ avatar, first, last }) => (
+  <AvatarImage src={avatar} alt={`${first} ${last}'s avatar`} />
 );
 
 export default Avatar;

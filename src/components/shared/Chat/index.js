@@ -1,7 +1,6 @@
 import React from "react";
 import io from "socket.io-client";
 import styled from "styled-components";
-
 import Window from "./Window";
 import Toggle from "./Toggle";
 
@@ -18,17 +17,27 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
 `;
+
+const socket = io("/chat");
 export default class Chat extends React.Component {
   state = {
     isOpen: true,
-    socket: null,
     input: "",
-    messages: []
+    messages: [],
+    sender: null,
+    recipients: []
   };
 
-  componentDidMount() {
-    const socket = io("/chat");
-    this.setState({ socket });
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.userLoggedIn !== prevProps.userLoggedIn &&
+      this.props.userWithSummary !== prevProps.userWithSummary
+    ) {
+      this.setState({
+        sender: this.props.userLoggedIn,
+        recipients: [this.props.userWithSummary]
+      });
+    }
   }
 
   handleInput = e => {
@@ -41,8 +50,7 @@ export default class Chat extends React.Component {
     this.setState({ isOpen: !isOpen });
   };
 
-  sendMessageToServer = message =>
-    this.state.socket.emit("sendMessage", { message });
+  sendMessageToServer = message => socket.emit("sendMessage", { message });
 
   onSend = () => {
     const { input } = this.state;

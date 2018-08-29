@@ -9,6 +9,7 @@ import {
   callGetMessages,
   callPostMessages
 } from "../../../api/chat";
+
 const Wrapper = styled.div`
   height: 45rem;
   width: 45rem;
@@ -86,7 +87,6 @@ export default class Chat extends React.Component {
   };
 
   render() {
-    console.log(this.state.messages);
     return (
       <Wrapper>
         {this.state.isOpen && (

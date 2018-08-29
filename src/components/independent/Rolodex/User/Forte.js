@@ -5,11 +5,10 @@ import Forte from "../../../shared/User/Forte/";
 
 const ForteContainer = styled(FC)`
   &.override {
-    width: 40rem;
-    padding: 2rem;
+    height: 4rem;
     > svg {
-      height: 10rem;
-      width: 10rem;
+      height: 3rem;
+      width: 3rem;
     }
   }
 `;

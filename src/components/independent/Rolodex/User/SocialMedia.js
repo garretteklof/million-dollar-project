@@ -10,6 +10,11 @@ const SMLink = styled(SpriteShape.withComponent("a"))``;
 const SMContainer = styled(SMC)`
   &.override {
     flex-direction: column;
+    margin: 0;
+    position: absolute;
+    right: -5.5rem;
+    top: 50%;
+    transform: translateY(-50%);
     > a {
       margin: 0;
       height: 4rem;

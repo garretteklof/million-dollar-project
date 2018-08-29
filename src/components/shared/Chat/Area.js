@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Area = styled.ul`
+const Area = styled.div`
   height: 100%;
   width: 100%;
   background: lightgrey;
@@ -9,7 +9,7 @@ const Area = styled.ul`
 const ChatArea = ({ messages }) => (
   <Area>
     {messages.map(message => (
-      <li key={message._id}>{message.content}</li>
+      <div key={message._id}>{message.content}</div>
     ))}
   </Area>
 );

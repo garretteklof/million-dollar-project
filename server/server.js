@@ -8,6 +8,7 @@ const { ObjectID } = require("mongodb");
 
 const { mongoose } = require("./db/mongoose");
 const { User } = require("./models/user");
+const { Convo, Message } = require("./models/chat");
 
 const { authenticate } = require("./middleware/authenticate");
 const { scrubObj, validateSM } = require("./helpers/objects");
@@ -51,8 +52,8 @@ app.post("/users", express.json(), async (req, res) => {
   }
 });
 
-app.get("/users/:internalUrl", authenticate, async (req, res) => {
-  const internalUrl = req.params.internalUrl;
+app.get("/users/:internal_url", authenticate, async (req, res) => {
+  const internalUrl = req.params.internal_url;
   try {
     const user = await User.findOne({ internalUrl });
     if (!user) res.status(404).send();
@@ -154,10 +155,57 @@ app.delete("/logout", authenticate, async (req, res) => {
   }
 });
 
+/***************************** CHAT *****************************/
+
+app.get("/convos", authenticate, async (req, res) => {
+  try {
+    const participants = req.query.participants.split(",");
+    const convo = await Convo.findOne({
+      participants: { $size: participants.length, $all: participants }
+    });
+    res.send(convo);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
+app.post("/convos", express.json(), authenticate, async (req, res) => {
+  try {
+    const { participants } = req.body;
+    const convo = new Convo({ participants });
+    await convo.save();
+    res.send(convo);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
+app.get("/messages", authenticate, async (req, res) => {
+  try {
+    const { convoId } = req.query;
+    const messages = await Message.find({ convoId });
+    res.send(messages);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
+app.post("/messages", express.json(), authenticate, async (req, res) => {
+  try {
+    const { convoId, content, sender } = req.body;
+    const message = new Message({ convoId, content, sender });
+    await message.save();
+    res.send(message);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
 /***************************** SOCKET.IO *****************************/
 
 io.of("/chat").on("connection", socket => {
-  socket.on("sendMessage", ({ message }) => console.log(message));
+  socket.on("sendMessage", ({ sender, recipients, message }) => {
+    console.log({ sender, recipients, message });
+  });
 });
 
 /***************************** FRONTEND *****************************/

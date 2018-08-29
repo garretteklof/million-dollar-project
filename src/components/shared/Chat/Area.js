@@ -9,7 +9,7 @@ const Area = styled.ul`
 const ChatArea = ({ messages }) => (
   <Area>
     {messages.map(message => (
-      <li key={message}>{message}</li>
+      <li key={message._id}>{message.content}</li>
     ))}
   </Area>
 );

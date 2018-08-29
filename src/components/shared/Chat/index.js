@@ -1,9 +1,14 @@
 import React from "react";
-import io from "socket.io-client";
+//import io from "socket.io-client";
 import styled from "styled-components";
 import Window from "./Window";
 import Toggle from "./Toggle";
-
+import {
+  callGetConvos,
+  callPostConvos,
+  callGetMessages,
+  callPostMessages
+} from "../../../api/chat";
 const Wrapper = styled.div`
   height: 45rem;
   width: 45rem;
@@ -18,25 +23,27 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const socket = io("/chat");
+//const socket = io("/chat");
 export default class Chat extends React.Component {
   state = {
-    isOpen: true,
+    isOpen: false,
     input: "",
     messages: [],
     sender: null,
-    recipients: []
+    recipients: [],
+    allParticipants: [],
+    convoId: null
   };
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.userLoggedIn !== prevProps.userLoggedIn &&
-      this.props.userWithSummary !== prevProps.userWithSummary
-    ) {
-      this.setState({
-        sender: this.props.userLoggedIn,
-        recipients: [this.props.userWithSummary]
-      });
+    if (this.props !== prevProps) {
+      const { userLoggedIn, userWithSummary } = this.props;
+      if (userLoggedIn && userWithSummary) {
+        const sender = userLoggedIn;
+        const recipients = [userWithSummary];
+        const allParticipants = [userWithSummary._id, userLoggedIn._id];
+        this.setState({ sender, recipients, allParticipants });
+      }
     }
   }
 
@@ -47,21 +54,39 @@ export default class Chat extends React.Component {
 
   onToggle = () => {
     const { isOpen } = this.state;
-    this.setState({ isOpen: !isOpen });
+    this.setState({ isOpen: !isOpen }, async () => {
+      if (this.state.isOpen) {
+        const { allParticipants } = this.state;
+        const token = localStorage.getItem("x-auth-token");
+        let convo = await callGetConvos(allParticipants.toString(), token);
+        if (convo.data) {
+          const messages = await callGetMessages(convo.data._id, token);
+          this.setState({ messages: messages.data, convoId: convo.data._id });
+        } else {
+          convo = await callPostConvos(allParticipants, token);
+          this.setState({ convoId: convo.data._id });
+        }
+      }
+    });
   };
 
-  sendMessageToServer = message => socket.emit("sendMessage", { message });
+  sendMessageToServer = message => {
+    const token = localStorage.getItem("x-auth-token");
+    return callPostMessages(message, token);
+  };
 
-  onSend = () => {
-    const { input } = this.state;
+  onSend = async () => {
+    const { input, sender, convoId } = this.state;
+    const mesObj = { convoId, sender: sender._id, content: input };
     let messages = this.state.messages;
     if (input === "") return;
-    messages.push(input);
-    this.sendMessageToServer(input);
+    const { data } = await this.sendMessageToServer(mesObj);
+    messages.push(data);
     this.setState({ messages, input: "" });
   };
 
   render() {
+    console.log(this.state.messages);
     return (
       <Wrapper>
         {this.state.isOpen && (

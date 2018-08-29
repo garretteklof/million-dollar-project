@@ -1,42 +1,36 @@
 const mongoose = require("mongoose");
 
-const ChatSchema = new Schema({
+const ConvoSchema = new mongoose.Schema({
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ]
+});
+
+const MessageSchema = new mongoose.Schema({
+  convoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Convo"
+  },
+  content: String,
   sender: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
-  messages: [
-    {
-      message: String,
-      timestamp: Date,
-      meta: [
-        {
-          recipient: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-          },
-          delivered: Boolean,
-          read: Boolean
-        }
-      ]
-    }
-  ],
-  participants: [
+  hasSeen: [
     {
       recipient: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
       },
-      delivered: Boolean,
-      read: Boolean
+      seenAt: Date
     }
-  ],
-  isGroupChat: {
-    type: Boolean,
-    default: false
-  }
+  ]
 });
 
-const Chat = mongoose.model("Chat", ChatSchema);
+const Convo = mongoose.model("Convo", ConvoSchema);
+const Message = mongoose.model("Message", MessageSchema);
 
-module.exports = { Chat };
+module.exports = { Convo, Message };

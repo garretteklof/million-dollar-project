@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Area = styled.div`
   height: 100%;
   width: 100%;
-  background: lightgrey;
+  background: #fcfcfc;
 `;
 const ChatArea = ({ messages }) => (
   <Area>

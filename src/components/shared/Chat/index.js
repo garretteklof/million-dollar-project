@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   transform: translateX(-50%);
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
   flex-direction: column;
 `;
 
@@ -96,7 +96,7 @@ export default class Chat extends React.Component {
             {...this.state}
           />
         )}
-        <Toggle onToggle={this.onToggle} />
+        <Toggle onToggle={this.onToggle} {...this.state} />
       </Wrapper>
     );
   }

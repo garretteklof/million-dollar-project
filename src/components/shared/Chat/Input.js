@@ -1,49 +1,42 @@
 import React from "react";
 import styled from "styled-components";
-import Sprite from "../Sprite/";
 
 import { COLORS } from "../Variables";
 
 const Wrapper = styled.div`
   margin-top: auto;
   display: flex;
-  align-items: stretch;
-  background-color: papayawhip;
+  justify-content: center;
+  align-items: center;
+  background-color: #fcfcfc;
   width: 100%;
-  height: 5rem;
+  padding: 2rem;
 `;
+
 const MessageInput = styled.textarea`
   border: none;
   resize: none;
-  border: 2px solid ${COLORS.gunmetal};
-  width: calc(100% - 6rem);
-  height: 100%;
+  height: 4rem;
+  width: 100%;
+  border: 1px solid ${COLORS.timberwolf};
+  border-radius: 4px;
   padding: 0.75rem;
-  font-size: 1.4rem;
-`;
-const SendButton = styled.a`
-  text-decoration: none;
-  width: 8rem;
-  height: 100%;
-  background-color: ${COLORS.gunmetal};
-  color: ${COLORS.gunmetal};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  > svg {
-    fill: white;
-    height: 3rem;
-    width: 3rem;
+  font-size: 1.6rem;
+  &:focus {
+    outline: none;
   }
 `;
 
-const ChatInput = ({ onSend, handleInput, input, ...rest }) => (
+const ChatInput = ({ onSend, handleInput, input, recipients }) => (
   <Wrapper>
-    <MessageInput value={input} onChange={handleInput} {...rest} />
-    <SendButton onClick={onSend}>
-      <Sprite icon={"paper-plane"} />
-    </SendButton>
+    <MessageInput
+      type="text"
+      placeholder={`Talk to ${recipients[0].name.first}...`}
+      value={input}
+      onChange={handleInput}
+      onKeyDown={e => e.keyCode === 13 && onSend()}
+      autoFocus
+    />
   </Wrapper>
 );
 

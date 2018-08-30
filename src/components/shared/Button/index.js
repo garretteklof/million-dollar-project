@@ -23,9 +23,11 @@ const StyledButton = styled.button`
       height: 8rem;
       width: 8rem;
       border-radius: 100%;
-      background: ${COLORS.gunmetal};
-      background: #1B264F;
-      /* box-shadow: 0 2rem 4rem ${rgba(COLORS.gunmetal, 0.2)}; */
+      background: linear-gradient(
+        to right,
+        ${COLORS.turquoise},
+        ${COLORS.eucalyptus}
+      );
       > svg {
         fill: white;
         height: 4.5rem;

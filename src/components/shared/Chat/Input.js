@@ -8,7 +8,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fcfcfc;
   width: 100%;
   padding: 2rem;
 `;
@@ -31,7 +30,7 @@ const ChatInput = ({ onSend, handleInput, input, recipients }) => (
   <Wrapper>
     <MessageInput
       type="text"
-      placeholder={`Talk to ${recipients[0].name.first}...`}
+      placeholder={`Chat with ${recipients[0].name.first}...`}
       value={input}
       onChange={handleInput}
       onKeyDown={e => e.keyCode === 13 && onSend()}

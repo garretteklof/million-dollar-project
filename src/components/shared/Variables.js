@@ -8,7 +8,9 @@ export const COLORS = {
   sky: "#00C7FF",
   strawberry: "#FF6B97",
   gunmetal: "#242D3C",
-  timberwolf: "#D9D8D7"
+  timberwolf: "#D9D8D7",
+  turquoise: "#00fddc",
+  eucalyptus: "#40f99b"
 };
 
 export const FORTE_PROP_BG = ({ visionary, engineer, artist, tbd }) => {

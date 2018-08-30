@@ -36,6 +36,10 @@ export default class Chat extends React.Component {
     convoId: null
   };
 
+  componentDidMount() {
+    window.addEventListener("keydown", this.escapeToToggle);
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props !== prevProps) {
       const { userLoggedIn, userWithSummary } = this.props;
@@ -47,6 +51,13 @@ export default class Chat extends React.Component {
       }
     }
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.escapeToToggle);
+  }
+
+  escapeToToggle = e =>
+    e.keyCode === 27 && this.state.isOpen && this.onToggle();
 
   buildMessage = message => {
     const { sender, recipients } = this.state;

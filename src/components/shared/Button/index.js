@@ -16,6 +16,7 @@ const StyledButton = styled.button`
   ${props =>
     props.chat &&
     css`
+      position: relative;
       color: white;
       border: none;
       font-size: 0;

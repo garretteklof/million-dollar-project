@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Message = styled.li`
-  /* background: green; */
   display: grid;
   grid-template-columns: min-content 1fr;
   align-items: center;
@@ -21,7 +20,6 @@ const Content = styled.div`
   padding: 1rem;
   align-self: start;
   &::after {
-    z-index: -1;
     content: "";
     position: absolute;
     top: 50%;

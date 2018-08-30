@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const Avatar = styled.img`
-  height: 8rem;
-  width: 8rem;
+  height: 100%;
+  width: 100%;
   border-radius: 100%;
   object-fit: cover;
 `;

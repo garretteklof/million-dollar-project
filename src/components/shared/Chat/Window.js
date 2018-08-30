@@ -5,10 +5,9 @@ import Input from "./Input";
 import Area from "./Area";
 
 const Window = styled.div`
-  z-index: -3;
   position: relative;
-  height: calc(100% - 7.5rem - 2rem);
-  width: 100%;
+  height: calc(45rem - 7.5rem - 2rem);
+  width: 45rem;
   background: #f3f3f3;
   display: flex;
   justify-content: center;

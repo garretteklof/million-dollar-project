@@ -13,7 +13,6 @@ const Area = styled.ul`
   align-items: start;
   grid-template-columns: 1fr;
   grid-row-gap: 0.5rem;
-  z-index: -2;
   overflow-y: scroll;
   font-size: 1.2rem;
 `;

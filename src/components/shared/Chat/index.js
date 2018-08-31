@@ -13,10 +13,12 @@ import {
 
 const Wrapper = styled.div`
   position: absolute;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
   bottom: 0;
-  right: 0;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   flex-direction: column;
   ${props =>
     props.overlay &&
@@ -83,13 +85,6 @@ export default class Chat extends React.Component {
   performCloseToggle = condition => e =>
     condition(e) && this.state.isOpen && this.onToggle();
 
-  buildMessage = message => {
-    const { sender, recipients } = this.state;
-    if (message.sender === sender._id)
-      return { sender: true, avatar: sender.avatar };
-    return { sender: false, avatar: recipients[0].avatar };
-  };
-
   handleInput = e => {
     const input = e.target.value;
     this.setState({ input });
@@ -144,7 +139,6 @@ export default class Chat extends React.Component {
           <Window
             onSend={this.onSend}
             handleInput={this.handleInput}
-            buildMessage={this.buildMessage}
             onToggle={this.onToggle}
             {...this.state}
           />

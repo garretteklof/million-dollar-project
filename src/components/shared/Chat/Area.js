@@ -12,9 +12,8 @@ const Area = styled.ul`
   align-content: start;
   align-items: start;
   grid-template-columns: 1fr;
-  grid-row-gap: 0.5rem;
+  grid-row-gap: 3rem;
   overflow-y: scroll;
-  font-size: 1.2rem;
 `;
 const ChatArea = ({ messages, ...rest }) => (
   <Area>

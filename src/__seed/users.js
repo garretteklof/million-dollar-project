@@ -92,7 +92,7 @@ const logoutTestUser = async () => {
 const addRandomUser = async location => {
   try {
     const email = faker.internet.exampleEmail();
-    const password = faker.internet.password();
+    const password = "abc123";
     const name = { first: faker.name.firstName(), last: faker.name.lastName() };
     const avatar = faker.image.avatar();
     const forte = chooseRandomForte();

@@ -1,0 +1,198 @@
+[
+  {
+    "name": { "first": "Slim", "last": "Jesus" },
+    "forte": "tbd",
+    "email": "test@test.com",
+    "password": "$2a$10$GXesYr2qPDm6V5nmmCx13uWboN8qLkWy9FBKH/8TZKBSJ6zUvjS5q",
+    "internalUrl": "slim-jesus",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/envex/128.jpg",
+    "location": {
+      "geo": { "lat": 43.07466941883877, "lng": -89.38419462801693 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Ahmad", "last": "Vandervort" },
+    "forte": "tbd",
+    "email": "test2@test.com",
+    "password": "$2a$10$KvuoF8CBPVQru/TV2Wg5PO7DkuyCHTmX4DYFXicPEBZNMkTeHNELi",
+    "internalUrl": "ahmad-vandervort",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/hugomano/128.jpg",
+    "socialMedia": {
+      "twitter": "https://twitter.com/T_Knight31",
+      "github": "https://github.com/garretteklof",
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/"
+    },
+    "location": {
+      "geo": { "lat": 43.01379279806494, "lng": -89.43361621243383 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Mae", "last": "Homenick" },
+    "forte": "artist",
+    "email": "test3@test.com",
+    "password": "$2a$10$K42Au7I64Ua5Xcg3pLyQjODoZ48TZYiT4GYs7fyN3dZbGbWAiDn2S",
+    "internalUrl": "mae-homenick",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josecarlospsh/128.jpg",
+    "socialMedia": {
+      "github": "https://github.com/garretteklof",
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "twitter": "https://twitter.com/T_Knight31",
+      "dribbble": "https://dribbble.com/slaterdesign"
+    },
+    "location": {
+      "geo": { "lat": 43.1359528215678, "lng": -89.41909039932989 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Yolanda", "last": "Marquardt" },
+    "forte": "artist",
+    "email": "test4@test.com",
+    "password": "$2a$10$b9QyKAfyBnEiTdU0IIdGOe4g0lW0R1H3xxN1WB/dbx6osl9JWFuse",
+    "internalUrl": "yolanda-marquardt",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/jcubic/128.jpg",
+    "socialMedia": {
+      "github": "https://github.com/garretteklof",
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "twitter": "https://twitter.com/T_Knight31"
+    },
+    "location": {
+      "geo": { "lat": 43.049418476114774, "lng": -89.36474699362009 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Ervin", "last": "Ratke" },
+    "forte": "engineer",
+    "email": "test5@test.com",
+    "password": "$2a$10$UTofWlUw8IPS3B/Z5wd8BezWu2Ihi5Vw5DgllilivrxgiUbk8uBlq",
+    "internalUrl": "ervin-ratke",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/naitanamoreno/128.jpg",
+    "socialMedia": {
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "dribbble": "https://dribbble.com/slaterdesign",
+      "github": "https://github.com/garretteklof"
+    },
+    "location": {
+      "geo": { "lat": 43.13781994889764, "lng": -89.40453749084134 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Jordon", "last": "Koelpin" },
+    "forte": "engineer",
+    "email": "test6@test.com",
+    "password": "$2a$10$utYNtw.n5sqdE7Ax0C58T.BNHkqniQgR/LhkZ97npjY546bu5c9qK",
+    "internalUrl": "jordon-koelpin",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/bluefx_/128.jpg",
+    "socialMedia": {
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "dribbble": "https://dribbble.com/slaterdesign",
+      "github": "https://github.com/garretteklof",
+      "twitter": "https://twitter.com/T_Knight31"
+    },
+    "location": {
+      "geo": { "lat": 43.018039568585, "lng": -89.29826308641378 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Lemuel", "last": "Wehner" },
+    "forte": "visionary",
+    "email": "test7@test.com",
+    "password": "$2a$10$rT2Lhf8gNb/P1eDwjM5YTORoui90Vb1SvlA4eau8E6L/uuyeLHqWi",
+    "internalUrl": "lemuel-wehner",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/sunlandictwin/128.jpg",
+    "socialMedia": {
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "twitter": "https://twitter.com/T_Knight31"
+    },
+    "location": {
+      "geo": { "lat": 43.03718588892506, "lng": -89.31883579069495 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Joshuah", "last": "Bogisich" },
+    "forte": "visionary",
+    "email": "test8@test.com",
+    "password": "$2a$10$I2XijOE5qOU9a5IVp.AzDOBtTO5M/JIk5z4FBrLUpnVOFzwqFCHpS",
+    "internalUrl": "joshuah-bogisich",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/vinciarts/128.jpg",
+    "socialMedia": {
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "github": "https://github.com/garretteklof",
+      "dribbble": "https://dribbble.com/slaterdesign"
+    },
+    "location": {
+      "geo": { "lat": 43.11674271775197, "lng": -89.34167082054324 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Mozell", "last": "Borer" },
+    "forte": "tbd",
+    "email": "test9@test.com",
+    "password": "$2a$10$UuzgL4jFbdQw0mF1ZEmHKeo21pPvozulyWocxqKHOODhxeVWt484y",
+    "internalUrl": "mozell-borer",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/thinkleft/128.jpg",
+    "socialMedia": {
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "twitter": "https://twitter.com/T_Knight31",
+      "github": "https://github.com/garretteklof",
+      "dribbble": "https://dribbble.com/slaterdesign"
+    },
+    "location": {
+      "geo": { "lat": 43.089128268567045, "lng": -89.3325169335643 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Zoie", "last": "Reynolds" },
+    "forte": "visionary",
+    "email": "test10@test.com",
+    "password": "$2a$10$G.NqtbaqjVUWCSkQ/FRWreqOaGWdmxoWzCNMnBS4eoyHE2x52PCXO",
+    "internalUrl": "zoie-reynolds",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/belyaev_rs/128.jpg",
+    "socialMedia": {
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/",
+      "dribbble": "https://dribbble.com/slaterdesign",
+      "github": "https://github.com/garretteklof",
+      "twitter": "https://twitter.com/T_Knight31"
+    },
+    "location": {
+      "geo": { "lat": 43.104763600465304, "lng": -89.41291681999132 },
+      "isSharing": true
+    }
+  },
+  {
+    "name": { "first": "Zane", "last": "Wiegand" },
+    "forte": "artist",
+    "email": "test11@test.com",
+    "password": "$2a$10$2SSQ9l1P/6fBO9VAbFK5du77NVd1cKZC64Ye2G2K7AMf/awonUWRK",
+    "internalUrl": "zane-wiegand",
+    "tokens": [],
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/vovkasolovev/128.jpg",
+    "socialMedia": {
+      "twitter": "https://twitter.com/T_Knight31",
+      "github": "https://github.com/garretteklof",
+      "linkedIn": "https://www.linkedin.com/in/garrett-eklof/"
+    },
+    "location": {
+      "geo": { "lat": 43.09873992770565, "lng": -89.34379207932284 },
+      "isSharing": true
+    }
+  }
+]

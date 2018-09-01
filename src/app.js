@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import App from "./routers/App";
+import App, { history } from "./routers/App";
 import configureStore from "./store/configureStore";
 import { injectGlobal } from "styled-components";
+import { loginUser, logoutUser } from "./actions/auth";
+import { callGetMe } from "./api/users";
 
 const store = configureStore();
 
@@ -22,10 +24,22 @@ const renderApp = () => {
 };
 
 (async () => {
-  try {
+  const token = localStorage.getItem("x-auth-token");
+  if (token) {
+    try {
+      const currentUser = await callGetMe(token);
+      store.dispatch(loginUser(currentUser.data));
+      renderApp();
+      history.push("/discover");
+    } catch (e) {
+      localStorage.removeItem("x-auth-token");
+      store.dispatch(logoutUser());
+      renderApp();
+      history.push("/login");
+    }
+  } else {
     renderApp();
-  } catch (e) {
-    renderApp();
+    history.push("/login");
   }
 })();
 

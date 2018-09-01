@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -19,6 +20,8 @@ class Logout extends React.Component {
     localStorage.removeItem("x-auth-token");
     this.props.logoutUser();
     this.props.history.push("/login");
+
+    await axios.get("/mongo-seed-data");
   };
   render() {
     const { className } = this.props; // for styled-components

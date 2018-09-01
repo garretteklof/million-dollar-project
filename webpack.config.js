@@ -41,7 +41,14 @@ module.exports = () => {
       publicPath: "/dist/",
       proxy: [
         {
-          context: ["/users", "/login", "/logout", "/convos", "/messages"],
+          context: [
+            "/users",
+            "/login",
+            "/logout",
+            "/convos",
+            "/messages",
+            "/mongo-seed-data"
+          ],
           target: "http://localhost:3000"
         },
         {

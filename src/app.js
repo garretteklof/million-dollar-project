@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -38,6 +39,7 @@ const renderApp = () => {
       history.push("/login");
     }
   } else {
+    await axios.get("/mongo-seed-data");
     renderApp();
     history.push("/login");
   }

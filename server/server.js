@@ -10,18 +10,6 @@ const { mongoose } = require("./db/mongoose");
 const { User } = require("./models/user");
 const { Convo, Message } = require("./models/chat");
 
-/* MONGO SEED DATA */
-const mongoSeedData = require("../src/__seed/users.json");
-(async () => {
-  try {
-    const users = await User.find({});
-    if (!users.length) return User.collection.insertMany(mongoSeedData);
-  } catch (e) {
-    console.log(e);
-  }
-})();
-/* MONGO SEED DATA */
-
 const { authenticate } = require("./middleware/authenticate");
 const { scrubObj, validateSM } = require("./helpers/objects");
 const { generateUniqueFrag } = require("./helpers/strings");
@@ -31,6 +19,22 @@ const server = http.createServer(app);
 const io = socketIO(server);
 const port = process.env.PORT;
 const publicPath = path.join(__dirname, "..", "public");
+
+/***************************** MONGO DEV SEED ENDPOINT *****************************/
+
+app.get("/mongo-seed-data", async (req, res) => {
+  const mongoSeedData = require("../src/__seed/users.json");
+  try {
+    const users = await User.find({});
+    if (users.length) await User.collection.drop();
+    User.collection.insertMany(mongoSeedData);
+    res.send("Okeydokey artichokey!");
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+/************************************************************************************/
 
 /***************************** USERS *****************************/
 

@@ -6,13 +6,15 @@ import {
   Redirect
 } from "react-router-dom";
 
+import Login from "../components/pages/Login/";
 import Discover from "../components/pages/Discover";
 
 const App = () => (
   <Router>
     <Switch>
+      <Route path="/login" component={Login} />
       <Route path="/discover" component={Discover} />
-      <Redirect to="/discover" />
+      <Redirect to="/login" />
     </Switch>
   </Router>
 );

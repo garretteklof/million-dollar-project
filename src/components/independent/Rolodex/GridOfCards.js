@@ -29,8 +29,8 @@ const GridOfCards = ({ users, ...rest }) => (
   </Flipper>
 );
 
-const mapStateToProps = ({ users, map }) => ({
-  users: fetchUsersInSurroundingArea(users, map.bounds)
+const mapStateToProps = ({ users, map, auth }) => ({
+  users: fetchUsersInSurroundingArea(users, map.bounds, auth._id)
 });
 
 export default connect(mapStateToProps)(GridOfCards);

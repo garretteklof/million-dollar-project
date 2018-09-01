@@ -1,7 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import { callLogin } from "../../../api/auth";
+import { loginUser } from "../../../actions/auth";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   state = {
     email: "",
     password: ""
@@ -16,6 +18,7 @@ export default class Login extends React.Component {
       const response = await callLogin(email, password);
       const token = response.headers["x-auth"];
       localStorage.setItem("x-auth-token", token);
+      this.props.loginUser(response.data);
       this.props.history.push("/discover");
     } catch (e) {
       console.log(e);
@@ -43,3 +46,12 @@ export default class Login extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  loginUser: user => dispatch(loginUser(user))
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(Login);

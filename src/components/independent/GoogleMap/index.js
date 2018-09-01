@@ -11,11 +11,7 @@ import GhostToggle from "./GhostToggle";
 import { __$setUsers } from "../../../actions/users";
 import { setBounds } from "../../../actions/map";
 
-import {
-  callGetUsers,
-  callGetMe,
-  callPatchUserLocation
-} from "../../../api/users";
+import { callGetUsers, callPatchUserLocation } from "../../../api/users";
 
 import {
   handleTestUserBeforeMount,
@@ -30,14 +26,10 @@ class GoogleMap extends React.Component {
     lng: -89.38419462801693,
     showLocation: false,
     isLoading: false,
-    geolocationDenied: false,
-    currentUserId: null
+    geolocationDenied: false
   };
 
   async componentDidMount() {
-    const token = localStorage.getItem("x-auth-token");
-    const { data } = await callGetMe(token);
-    this.setState({ currentUserId: data._id });
     // small mount delay w/ react-google-maps
     // can't access map ref on mount
     // ∴ need ~small setTimeout
@@ -98,7 +90,7 @@ class GoogleMap extends React.Component {
           const lng = coords.longitude;
           try {
             await callPatchUserLocation(
-              this.state.currentUserId,
+              this.props.authId,
               { geo: { lat, lng } },
               token
             );
@@ -135,7 +127,7 @@ class GoogleMap extends React.Component {
           return bounds.contains(new google.maps.LatLng(location.geo));
         }
       })
-      .filter(({ email }) => email !== "test@test.com");
+      .filter(({ _id }) => _id !== this.props.authId);
 
     const markers = users.map(({ location }) => ({
       position: new google.maps.LatLng(location.geo)
@@ -180,7 +172,7 @@ class GoogleMap extends React.Component {
         isSharing = false;
       }
       callPatchUserLocation(
-        this.state.currentUserId,
+        this.props.authId,
         { geo: { lat: this.state.lat, lng: this.state.lng }, isSharing },
         token
       );
@@ -209,7 +201,11 @@ const mapDispatchToProps = dispatch => ({
   __$setUsers: () => dispatch(__$setUsers())
 });
 
+const mapStateToProps = ({ auth }) => ({
+  authId: auth._id
+});
+
 export default connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps
 )(GoogleMap);

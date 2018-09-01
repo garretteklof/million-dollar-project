@@ -35,7 +35,7 @@ class GoogleMap extends React.Component {
   };
 
   async componentDidMount() {
-    const token = await handleTestUserBeforeMount();
+    const token = localStorage.getItem("x-auth-token");
     const { data } = await callGetMe(token);
     this.setState({ currentUserId: data._id });
     // small mount delay w/ react-google-maps
@@ -45,9 +45,11 @@ class GoogleMap extends React.Component {
       if (this._MAP_REF_) {
         try {
           await this.getCurrentLocation();
-          await seedRandomUsers(this.state.bounds, markers =>
-            this.setState({ markers })
-          );
+
+          // await seedRandomUsers(this.state.bounds, markers =>
+          //   this.setState({ markers })
+          // );
+
           //I have no real idea why this works.
           //But so much going on with seeding test users
           //neglible setTimeout keeps from having to refresh for users

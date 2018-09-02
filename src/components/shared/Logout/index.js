@@ -15,9 +15,9 @@ const LogoutButton = styled.a`
 
 class Logout extends React.Component {
   onLogout = async () => {
-    const token = localStorage.getItem("x-auth-token");
+    const token = sessionStorage.getItem("x-auth-token");
     await callLogout(token);
-    localStorage.removeItem("x-auth-token");
+    sessionStorage.removeItem("x-auth-token");
     this.props.logoutUser();
     this.props.history.push("/login");
 

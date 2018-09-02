@@ -25,7 +25,7 @@ const renderApp = () => {
 };
 
 (async () => {
-  const token = localStorage.getItem("x-auth-token");
+  const token = sessionStorage.getItem("x-auth-token");
   if (token) {
     try {
       const currentUser = await callGetMe(token);
@@ -33,7 +33,7 @@ const renderApp = () => {
       renderApp();
       history.push("/discover");
     } catch (e) {
-      localStorage.removeItem("x-auth-token");
+      sessionStorage.removeItem("x-auth-token");
       store.dispatch(logoutUser());
       renderApp();
       history.push("/login");

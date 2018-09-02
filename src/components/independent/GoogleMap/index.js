@@ -82,7 +82,7 @@ class GoogleMap extends React.Component {
 
   getCurrentLocation = async () => {
     this.setState({ isLoading: true });
-    const token = localStorage.getItem("x-auth-token");
+    const token = sessionStorage.getItem("x-auth-token");
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         async ({ coords }) => {
@@ -164,7 +164,7 @@ class GoogleMap extends React.Component {
 
   onGhostToggle = () =>
     this.setState({ showLocation: !this.state.showLocation }, () => {
-      const token = localStorage.getItem("x-auth-token");
+      const token = sessionStorage.getItem("x-auth-token");
       let isSharing;
       if (this.state.showLocation) {
         isSharing = true;

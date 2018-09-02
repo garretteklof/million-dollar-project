@@ -40,7 +40,7 @@ class Login extends React.Component {
     try {
       const response = await callLogin(email, password);
       const token = response.headers["x-auth"];
-      localStorage.setItem("x-auth-token", token);
+      sessionStorage.setItem("x-auth-token", token);
       this.props.loginUser(response.data);
       this.props.history.push("/discover");
     } catch (e) {

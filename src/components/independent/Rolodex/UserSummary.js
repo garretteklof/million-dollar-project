@@ -29,7 +29,7 @@ export default class UserSummary extends React.Component {
   }
 
   getUserWithSummary = async () => {
-    const token = localStorage.getItem("x-auth-token");
+    const token = sessionStorage.getItem("x-auth-token");
     const { data } = await callGetUser(
       this.props.match.params.internalUrl,
       token
@@ -38,7 +38,7 @@ export default class UserSummary extends React.Component {
   };
 
   getUserLoggedIn = async () => {
-    const token = localStorage.getItem("x-auth-token");
+    const token = sessionStorage.getItem("x-auth-token");
     const { data } = await callGetMe(token);
     this.setState({ userLoggedIn: data });
   };

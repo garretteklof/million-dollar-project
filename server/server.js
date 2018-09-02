@@ -171,56 +171,33 @@ app.delete("/logout", authenticate, async (req, res) => {
   }
 });
 
-/***************************** CHAT *****************************/
-
-app.get("/convos", authenticate, async (req, res) => {
-  try {
-    const participants = req.query.participants.split(",");
-    const convo = await Convo.findOne({
-      participants: { $size: participants.length, $all: participants }
-    });
-    res.send(convo);
-  } catch (e) {
-    res.status(400).send();
-  }
-});
-
-app.post("/convos", express.json(), authenticate, async (req, res) => {
-  try {
-    const { participants } = req.body;
-    const convo = new Convo({ participants });
-    await convo.save();
-    res.send(convo);
-  } catch (e) {
-    res.status(400).send();
-  }
-});
-
-app.get("/messages", authenticate, async (req, res) => {
-  try {
-    const { convoId } = req.query;
-    const messages = await Message.find({ convoId });
-    res.send(messages);
-  } catch (e) {
-    res.status(400).send();
-  }
-});
-
-app.post("/messages", express.json(), authenticate, async (req, res) => {
-  try {
-    const { convoId, content, sender } = req.body;
-    const message = new Message({ convoId, content, sender });
-    await message.save();
-    res.send(message);
-  } catch (e) {
-    res.status(400).send();
-  }
-});
-/***************************** SOCKET.IO *****************************/
+/***************************** CHAT | SOCKET.IO *****************************/
 
 io.of("/chat").on("connection", socket => {
-  socket.on("sendMessage", ({ sender, recipients, message }) => {
-    console.log({ sender, recipients, message });
+  socket.on("findConvo", async ({ participants }) => {
+    try {
+      let convo = await Convo.findOne({
+        participants: { $size: participants.length, $all: participants }
+      });
+      if (!convo) {
+        convo = new Convo({ participants });
+        await convo.save();
+      }
+      const convoId = convo._id;
+      const messages = await Message.find({ convoId });
+      socket.emit("convoFound", { convoId, messages });
+    } catch (e) {
+      console.log(e); // emit error event
+    }
+  });
+  socket.on("createMessage", async ({ message }) => {
+    try {
+      const createdMessage = new Message({ ...message });
+      await createdMessage.save();
+      io.of("/chat").emit("messageCreated", { message: createdMessage });
+    } catch (e) {
+      console.log(e); // emit error event
+    }
   });
 });
 

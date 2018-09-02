@@ -1,5 +1,5 @@
 import React from "react";
-//import io from "socket.io-client";
+import io from "socket.io-client";
 import styled, { css } from "styled-components";
 import { rgba } from "polished";
 import Window from "./Window";
@@ -39,7 +39,6 @@ const Wrapper = styled.div`
     `};
 `;
 
-//const socket = io("/chat");
 export default class Chat extends React.Component {
   state = {
     isOpen: false,
@@ -48,7 +47,8 @@ export default class Chat extends React.Component {
     sender: null,
     recipients: [],
     allParticipants: [],
-    convoId: null
+    convoId: null,
+    socket: null
   };
 
   componentDidMount() {
@@ -56,6 +56,13 @@ export default class Chat extends React.Component {
       "keydown",
       this.performCloseToggle(e => e.keyCode === 27)
     );
+    const socket = io("/chat");
+    this.setState({ socket });
+    socket.on("messageCreated", ({ message }) => {
+      let messages = this.state.messages;
+      messages.push(message);
+      this.setState({ messages, input: "" });
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -93,39 +100,21 @@ export default class Chat extends React.Component {
   onToggle = () => {
     const { isOpen } = this.state;
     this.setState({ isOpen: !isOpen }, async () => {
-      if (this.state.isOpen) {
-        const { allParticipants } = this.state;
-        const token = localStorage.getItem("x-auth-token");
-        let convo = await callGetConvos(allParticipants.toString(), token);
-        if (convo.data) {
-          const messages = await callGetMessages(convo.data._id, token);
-          this.setState({
-            messages: messages.data,
-            convoId: convo.data._id
-          });
-        } else {
-          convo = await callPostConvos(allParticipants, token);
-          this.setState({
-            convoId: convo.data._id
-          });
-        }
+      const { isOpen, socket, allParticipants } = this.state;
+      if (isOpen) {
+        socket.emit("findConvo", { participants: allParticipants });
+        await socket.on("convoFound", ({ convoId, messages }) => {
+          this.setState({ convoId, messages });
+        });
       }
     });
   };
 
-  sendMessageToServer = message => {
-    const token = localStorage.getItem("x-auth-token");
-    return callPostMessages(message, token);
-  };
-
   onSend = async () => {
-    const { input, sender, convoId } = this.state;
-    const mesObj = { convoId, sender: sender._id, content: input };
-    let messages = this.state.messages;
+    const { input, sender, convoId, socket } = this.state;
+    const message = { convoId, sender: sender._id, content: input };
     if (input === "") return;
-    const { data } = await this.sendMessageToServer(mesObj);
-    messages.push(data);
-    this.setState({ messages, input: "" });
+    socket.emit("createMessage", { message });
   };
 
   render() {

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -30,16 +29,12 @@ const renderApp = () => {
     try {
       const currentUser = await callGetMe(token);
       store.dispatch(loginUser(currentUser.data));
-      renderApp();
     } catch (e) {
       sessionStorage.removeItem("x-auth-token");
       store.dispatch(logoutUser());
-      renderApp();
     }
-  } else {
-    await axios.get("/mongo-seed-data");
-    renderApp();
   }
+  renderApp();
 })();
 
 injectGlobal`

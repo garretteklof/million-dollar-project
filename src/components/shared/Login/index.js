@@ -1,6 +1,7 @@
+import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { callLogin } from "../../../api/auth";
 import { loginUser } from "../../../actions/auth";
 
@@ -21,10 +22,26 @@ const AutoLogin = styled.a`
   cursor: pointer;
 `;
 
+const SeedDB = styled.a`
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+  width: 20rem;
+  padding: 4rem 0;
+  text-align: center;
+  font-size: 2rem;
+  background: turquoise;
+  color: white;
+  cursor: pointer;
+`;
+
 class Login extends React.Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    error: ""
   };
 
   onAutoLogin = () => {
@@ -32,6 +49,9 @@ class Login extends React.Component {
       this.logBtn.click()
     );
   };
+
+  onSeedDB = async () => await axios.get("/mongo-seed-data");
+
   reusableInputHandler = type => e => this.setState({ [type]: e.target.value });
 
   onFormSubmit = async e => {
@@ -44,34 +64,40 @@ class Login extends React.Component {
       this.props.loginUser(response.data);
       this.props.history.push("/discover");
     } catch (e) {
-      console.log(e);
+      this.setState({
+        error: "Enter valid credentials, or reseed database."
+      });
     }
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, error } = this.state;
     return (
       <form onSubmit={this.onFormSubmit}>
-        <input
-          type="email"
-          placeholder="email"
-          value={email}
-          onChange={this.reusableInputHandler("email")}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={this.reusableInputHandler("password")}
-        />
-        <button
-          ref={ref => {
-            this.logBtn = ref;
-          }}
-        >
-          Submit
-        </button>
+        <div>
+          <input
+            type="email"
+            placeholder="email"
+            value={email}
+            onChange={this.reusableInputHandler("email")}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={this.reusableInputHandler("password")}
+          />
+          <button
+            ref={ref => {
+              this.logBtn = ref;
+            }}
+          >
+            Submit
+          </button>
+        </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <AutoLogin onClick={this.onAutoLogin}>Click For Auto Login</AutoLogin>
+        <SeedDB onClick={this.onSeedDB}>Click to Reset DB</SeedDB>
       </form>
     );
   }

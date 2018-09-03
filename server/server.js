@@ -174,6 +174,7 @@ app.delete("/logout", authenticate, async (req, res) => {
 /***************************** CHAT | SOCKET.IO *****************************/
 
 io.of("/chat").on("connection", socket => {
+  let room;
   socket.on("findConvo", async ({ participants }) => {
     try {
       let convo = await Convo.findOne({
@@ -184,6 +185,8 @@ io.of("/chat").on("connection", socket => {
         await convo.save();
       }
       const convoId = convo._id;
+      room = convoId;
+      socket.join(room);
       const messages = await Message.find({ convoId });
       socket.emit("convoFound", { convoId, messages });
     } catch (e) {
@@ -194,10 +197,15 @@ io.of("/chat").on("connection", socket => {
     try {
       const createdMessage = new Message({ ...message });
       await createdMessage.save();
-      io.of("/chat").emit("messageCreated", { message: createdMessage });
+      io.of("/chat")
+        .to(room)
+        .emit("messageCreated", { message: createdMessage });
     } catch (e) {
       console.log(e); // emit error event
     }
+  });
+  socket.on("disconnect", () => {
+    socket.leave(room);
   });
 });
 

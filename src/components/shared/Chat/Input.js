@@ -33,7 +33,12 @@ const ChatInput = ({ onSend, handleInput, input, recipients }) => (
       placeholder={`Chat with ${recipients[0].name.first}...`}
       value={input}
       onChange={handleInput}
-      onKeyDown={e => e.keyCode === 13 && onSend()}
+      onKeyDown={e => {
+        if (e.keyCode === 13) {
+          e.preventDefault();
+          onSend();
+        }
+      }}
       autoFocus
     />
   </Wrapper>

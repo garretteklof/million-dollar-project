@@ -7,8 +7,9 @@ import Area from "./Area";
 const Window = styled.div`
   position: relative;
   height: calc(50rem - 7.5rem - 4rem);
-  width: 50rem;
+  width: 40rem;
   background: #f3f3f3;
+  border-radius: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;

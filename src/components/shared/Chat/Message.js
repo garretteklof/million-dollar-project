@@ -3,7 +3,9 @@ import styled, { css } from "styled-components";
 
 const Message = styled.li`
   display: grid;
-  grid-template-columns: min-content 1fr;
+  grid-template-columns: min-content minmax(min-content, 70%);
+  justify-content: start;
+  justify-items: start;
   align-items: center;
   grid-column-gap: 1.5rem;
   font-size: 1.6rem;
@@ -18,6 +20,10 @@ const Message = styled.li`
       > div {
         background: linear-gradient(to left, #00fddc, #40f99b);
         color: white;
+        min-width: 5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         &::after {
           border: none;
           top: auto;
@@ -43,6 +49,7 @@ const Content = styled.div`
   position: relative;
   background: white;
   padding: 1rem;
+  border-radius: 0.5rem;
   align-self: start;
   &::after {
     z-index: -1;

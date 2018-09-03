@@ -4,12 +4,6 @@ import styled, { css } from "styled-components";
 import { rgba } from "polished";
 import Window from "./Window";
 import Toggle from "./Toggle";
-import {
-  callGetConvos,
-  callPostConvos,
-  callGetMessages,
-  callPostMessages
-} from "../../../api/chat";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -40,16 +34,20 @@ const Wrapper = styled.div`
 `;
 
 export default class Chat extends React.Component {
-  state = {
-    isOpen: false,
-    input: "",
-    messages: [],
-    sender: null,
-    recipients: [],
-    allParticipants: [],
-    convoId: null,
-    socket: null
-  };
+  constructor(props) {
+    super(props);
+    this.chatAreaRef = React.createRef();
+    this.state = {
+      isOpen: false,
+      input: "",
+      messages: [],
+      sender: null,
+      recipients: [],
+      allParticipants: [],
+      convoId: null,
+      socket: null
+    };
+  }
 
   componentDidMount() {
     window.addEventListener(
@@ -62,6 +60,7 @@ export default class Chat extends React.Component {
       let messages = this.state.messages;
       messages.push(message);
       this.setState({ messages, input: "" });
+      this.scrollRefToBottom(this.chatAreaRef.current);
     });
   }
 
@@ -105,17 +104,20 @@ export default class Chat extends React.Component {
         socket.emit("findConvo", { participants: allParticipants });
         await socket.on("convoFound", ({ convoId, messages }) => {
           this.setState({ convoId, messages });
+          this.scrollRefToBottom(this.chatAreaRef.current);
         });
       }
     });
   };
 
-  onSend = async () => {
+  onSend = () => {
     const { input, sender, convoId, socket } = this.state;
-    const message = { convoId, sender: sender._id, content: input };
     if (input === "") return;
+    const message = { convoId, sender: sender._id, content: input };
     socket.emit("createMessage", { message });
   };
+
+  scrollRefToBottom = ref => (ref.scrollTop = ref.scrollHeight);
 
   render() {
     const { isOpen } = this.state;
@@ -129,6 +131,7 @@ export default class Chat extends React.Component {
             onSend={this.onSend}
             handleInput={this.handleInput}
             onToggle={this.onToggle}
+            chatAreaRef={this.chatAreaRef}
             {...this.state}
           />
         )}

@@ -15,8 +15,9 @@ const Area = styled.ul`
   grid-row-gap: 3rem;
   overflow-y: scroll;
 `;
-const ChatArea = ({ messages, ...rest }) => (
-  <Area>
+
+const ChatArea = ({ messages, chatAreaRef, ...rest }) => (
+  <Area innerRef={chatAreaRef}>
     {messages.map(message => (
       <Message key={message._id} message={message} {...rest} />
     ))}

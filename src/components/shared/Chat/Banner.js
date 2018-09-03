@@ -12,6 +12,8 @@ const Banner = styled.div`
   align-items: center;
   color: white;
   font-size: 2rem;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
   > svg {
     fill: white;
     height: 3rem;

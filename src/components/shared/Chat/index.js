@@ -37,6 +37,7 @@ export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.chatAreaRef = React.createRef();
+    this.chatInputRef = React.createRef();
     this.state = {
       isOpen: false,
       input: "",
@@ -96,6 +97,10 @@ export default class Chat extends React.Component {
     this.setState({ input });
   };
 
+  onEmojiPicked = emoji => {
+    this.setState({ input: this.state.input + emoji });
+    this.chatInputRef.current.focus();
+  };
   onToggle = () => {
     const { isOpen } = this.state;
     this.setState({ isOpen: !isOpen }, async () => {
@@ -130,8 +135,10 @@ export default class Chat extends React.Component {
           <Window
             onSend={this.onSend}
             handleInput={this.handleInput}
+            onEmojiPicked={this.onEmojiPicked}
             onToggle={this.onToggle}
             chatAreaRef={this.chatAreaRef}
+            chatInputRef={this.chatInputRef}
             {...this.state}
           />
         )}

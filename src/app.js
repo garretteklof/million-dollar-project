@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import App, { history } from "./routers/App";
+import App from "./routers/App";
 import configureStore from "./store/configureStore";
 import { injectGlobal } from "styled-components";
 import { loginUser, logoutUser } from "./actions/auth";
@@ -31,17 +31,14 @@ const renderApp = () => {
       const currentUser = await callGetMe(token);
       store.dispatch(loginUser(currentUser.data));
       renderApp();
-      history.push("/discover");
     } catch (e) {
       sessionStorage.removeItem("x-auth-token");
       store.dispatch(logoutUser());
       renderApp();
-      history.push("/login");
     }
   } else {
     await axios.get("/mongo-seed-data");
     renderApp();
-    history.push("/login");
   }
 })();
 

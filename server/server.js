@@ -26,9 +26,9 @@ app.get("/mongo-seed-data", async (req, res) => {
   const mongoSeedData = require("../src/__seed/users.json");
   try {
     const users = await User.find({});
-    if (users.length) await User.collection.drop();
+    if (users.length) mongoose.connection.db.dropDatabase();
     User.collection.insertMany(mongoSeedData);
-    res.send("Okeydokey artichokey!");
+    res.end();
   } catch (e) {
     console.log(e);
   }

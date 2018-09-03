@@ -112,8 +112,7 @@ class GoogleMap extends React.Component {
           });
           return resolve();
         },
-        e => reject(e),
-        { enableHighAccuracy: true }
+        e => reject(e)
       );
     });
   };
